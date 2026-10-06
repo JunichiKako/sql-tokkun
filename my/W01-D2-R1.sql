@@ -11,6 +11,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D2-R1
 
 -- ▼ ここに SQL を書く
+SELECT employee_id, name, salary
+FROM employees
+WHERE salary >= 5000000
+      AND salary <= 7000000
+      AND job_title = '一般社員'
 
 
 

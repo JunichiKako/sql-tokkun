@@ -11,7 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D2-R2
 
 -- ▼ ここに SQL を書く
-
+SELECT product_id, name, category_id
+FROM products
+WHERE category_id IN (17,18,19)
 
 
 -- ─── テーブル早見表 ───

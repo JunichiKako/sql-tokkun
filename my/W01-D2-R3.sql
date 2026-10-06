@@ -12,6 +12,13 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D2-R3
 
 -- ▼ ここに SQL を書く
+SELECT order_id, ordered_at, payment_method
+FROM orders
+WHERE ordered_at < '2025-12-01'
+      AND ordered_at >= '2025-11-01'
+      AND status <> 'cancelled'
+      AND payment_method IN ('cod', 'bank_transfer')
+      AND shipping_fee = 550
 
 
 
