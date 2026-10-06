@@ -12,7 +12,9 @@
 
 -- ▼ ここに SQL を書く
 
-
+SELECT customer_id, name
+FROM customers
+WHERE email IS NULL
 
 -- ─── テーブル早見表 ───
 -- 読み方: テーブル名(列名, 列名, ...)。このDBにある全テーブルと全列を並べてある

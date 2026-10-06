@@ -12,6 +12,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D3-3
 
 -- ▼ ここに SQL を書く
+SELECT COUNT(*) AS cnt
+FROM orders
+WHERE coupon_code <> 'WELCOME10'
+      OR coupon_code IS NULL
 
 
 
