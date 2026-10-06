@@ -1,0 +1,6 @@
+{
+  // 特訓中は AI に答えを補完させない（このフォルダだけに効く設定）
+  "github.copilot.enable": { "*": false },
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "editor.inlineSuggest.enabled": false
+}

@@ -1,0 +1,24 @@
+{
+  // Cmd+Shift+B で、いま開いている解答ファイルを実行して採点する。
+  // ほかのタスクは Cmd+Shift+P →「Tasks: Run Task」から選ぶ。
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SQL: 実行して採点",
+      "type": "shell",
+      "command": "python3",
+      "args": ["${workspaceFolder}/tokkun.py", "--run", "${fileBasenameNoExtension}"],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false, "showReuseMessage": false },
+      "problemMatcher": []
+    },
+    {
+      "label": "SQL: 進捗を見る",
+      "type": "shell",
+      "command": "python3",
+      "args": ["${workspaceFolder}/tokkun.py"],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true, "focus": false, "showReuseMessage": false },
+      "problemMatcher": []
+    }
+  ]
+}

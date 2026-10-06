@@ -1,0 +1,7 @@
+# DB は setup/build_db.py で毎回同じ内容に作り直せるので管理しない
+tokkun.db
+sandbox.db
+*.db-journal
+
+__pycache__/
+.DS_Store
