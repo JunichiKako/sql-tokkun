@@ -12,6 +12,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D1-R2
 
 -- ▼ ここに SQL を書く
+SELECT DISTINCT payment_method
+FROM orders
+ORDER BY payment_method ASC
 
 
 

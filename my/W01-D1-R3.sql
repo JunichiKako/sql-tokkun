@@ -13,6 +13,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D1-R3
 
 -- ▼ ここに SQL を書く
+SELECT name, salary, 
+      ROUND(salary / 12.0,1)  AS monthly_salary
+FROM employees
+ORDER BY monthly_salary, employee_id
+LIMIT 5
+
 
 
 
