@@ -11,6 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D3-R1
 
 -- ▼ ここに SQL を書く
+SELECT employee_id, name
+FROM employees
+WHERE department_id IS NULL
+
 
 
 

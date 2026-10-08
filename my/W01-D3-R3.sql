@@ -11,8 +11,11 @@
 --     書きかけでも何度でも実行してよい（DB のコピーで動くので、元のデータは変わらない）
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D3-R3
 
--- ▼ ここに SQL を書く
-
+-- ▼ ここに SQL 
+SELECT COUNT(*) AS cnt
+FROM reviews
+WHERE comment NOT LIKE '%壊れ%'
+      OR comment IS NULL
 
 
 -- ─── テーブル早見表 ───

@@ -12,6 +12,9 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT customer_id,name
+FROM customers
+WHERE name LIKE '佐々木 %'
 
 
 -- ─── テーブル早見表 ───
