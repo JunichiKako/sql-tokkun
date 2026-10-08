@@ -11,7 +11,8 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D4-1
 
 -- ▼ ここに SQL を書く
-
+SELECT name, CAST(ROUND(price * 1.1) AS INTEGER) AS price_with_tax
+FROM products
 
 
 -- ─── テーブル早見表 ───

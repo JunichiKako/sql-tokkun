@@ -11,6 +11,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D4-2
 
 -- ▼ ここに SQL を書く
+SELECT product_id, name,
+       CASE WHEN price < 1000 THEN '低'
+            WHEN price < 5000 THEN '中'
+            ELSE '高'
+       END AS price_band
+FROM products
 
 
 

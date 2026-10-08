@@ -12,6 +12,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D4-3
 
 -- ▼ ここに SQL を書く
+SELECT name, COALESCE(email,'未登録'),
+       CASE WHEN gender = 'M' THEN '男性'
+       WHEN gender = 'F' THEN '女性'
+       ELSE '不明'
+       END AS gender_label
+FROM customers
 
 
 
