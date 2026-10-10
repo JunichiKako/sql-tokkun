@@ -11,6 +11,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D4-R2
 
 -- ▼ ここに SQL を書く
+SELECT employee_id,name,
+       CASE WHEN salary < 5000000 THEN 'C'
+       WHEN salary < 8000000 THEN 'B'
+       ELSE 'A'
+       END AS salary_band
+FROM employees
 
 
 

@@ -12,6 +12,13 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D4-R3
 
 -- ▼ ここに SQL を書く
+SELECT review_id, COALESCE(comment,'（コメントなし）') AS comment,
+       CASE WHEN rating = 5 THEN '最高'
+            WHEN rating = 4 THEN '良い'
+            WHEN rating = 3 THEN '普通'
+            ELSE '不満'
+            END AS rating_label
+FROM reviews
 
 
 

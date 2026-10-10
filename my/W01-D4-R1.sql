@@ -11,6 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D4-R1
 
 -- ▼ ここに SQL を書く
+SELECT order_item_id,
+       CAST(ROUND((quantity * unit_price) * 1.1) AS INTEGER) AS amount_with_tax
+FROM order_items
+
 
 
 
