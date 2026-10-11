@@ -12,6 +12,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D5-2
 
 -- ▼ ここに SQL を書く
+SELECT review_id,rating,comment,created_at
+FROM reviews
+WHERE rating <= 2
+      AND comment IS NOT NULL
+ORDER BY created_at DESC, review_id DESC
+LIMIT 5
 
 
 

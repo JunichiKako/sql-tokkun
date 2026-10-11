@@ -12,6 +12,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D5-1
 
 -- ▼ ここに SQL を書く
+SELECT name,salary,hired_on
+FROM employees
+WHERE  salary >= 6000000
+       AND hired_on > '2019-12-31'
+ORDER BY salary DESC, employee_id
 
 
 

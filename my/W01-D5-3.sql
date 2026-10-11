@@ -13,6 +13,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D5-3
 
 -- ▼ ここに SQL を書く
+SELECT product_id, name, price
+FROM products
+ORDER BY price,product_id
+LIMIT 10 OFFSET 20
+
 
 
 
