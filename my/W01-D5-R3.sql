@@ -13,7 +13,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D5-R3
 
 -- ▼ ここに SQL を書く
-
+SELECT customer_id,name, birth_date
+FROM customers
+WHERE registered_at IS NOT NULL
+      AND birth_date IS NOT NULL
+ORDER BY birth_date ,customer_id
+LIMIT 20 OFFSET 20
 
 
 -- ─── テーブル早見表 ───

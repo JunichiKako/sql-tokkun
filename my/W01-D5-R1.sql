@@ -12,6 +12,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D5-R1
 
 -- ▼ ここに SQL を書く
+SELECT name,price
+FROM products
+WHERE price < 2000
+      AND is_discontinued = 0
+ORDER BY price DESC, product_id
+
 
 
 

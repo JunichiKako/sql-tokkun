@@ -12,6 +12,13 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-D5-R2
 
 -- ▼ ここに SQL を書く
+SELECT log_id,customer_id,accessed_at
+FROM access_logs
+WHERE customer_id IS NOT NULL
+      AND device = 'pc'
+      AND path = '/complete'
+ORDER BY accessed_at DESC, log_id
+LIMIT 5
 
 
 
