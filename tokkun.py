@@ -22,7 +22,7 @@ DB = ROOT / "tokkun.db"
 ANSWERS = ROOT / "answers"
 MY = ROOT / "my"
 
-MARK = re.compile(r"^-- \[(W\d{2}-D\d-R?\d)\]\s*(.*)$")  # R 付きは定着の日の問題
+MARK = re.compile(r"^-- \[(W\d{2}-[DX]\d-R?\d)\]\s*(.*)$")  # R 付きは定着の日、X は復習週の問題
 FIELD = re.compile(r"^-- (問|出力|ヒント|確認|解説): ?(.*)$")
 CONT = re.compile(r"^-- \| ?(.*)$")
 FIELDS = {"問": "question", "出力": "output", "ヒント": "hint", "確認": "verify", "解説": "note"}
@@ -274,10 +274,13 @@ def run_file(problems, name):
 
 def progress(problems):
     total = done = 0
-    for week in sorted({p["id"][:3] for p in problems}):
+    def block(p):  # 進捗の1行の単位。復習週（X）は本編の週とは別の行にする
+        return p["id"][:3] + ("復習" if p["id"][4] == "X" else "")
+
+    for week in sorted({block(p) for p in problems}):
         marks, group = "", None
         counted = week != "W00"  # W00 は答え方の練習なので問題数に数えない
-        for p in (p for p in problems if p["id"].startswith(week)):
+        for p in (p for p in problems if block(p) == week):
             g = p["id"][:6] + ("R" if "-R" in p["id"] else "")  # 新出 / 定着 の1日分ごとに区切る
             if group is not None and g != group:
                 marks += " "
@@ -293,7 +296,7 @@ def progress(problems):
                 done += counted
             else:
                 marks += "❌"
-        print(f"{week}  {marks}" + ("" if counted else "  （練習）"))
+        print(f"{week:<4}  {marks}" + ("" if counted else "  （練習）"))
     print(f"\n{done} / {total} 問クリア   (✅正解 ❌不正解 📝自己採点 ・未着手。3問ずつが1日分)")
 
 
