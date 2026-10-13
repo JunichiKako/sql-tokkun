@@ -12,6 +12,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X1-1
 
 -- ▼ ここに SQL を書く
+SELECT product_id,name,released_on
+FROM products
+ORDER BY released_on DESC
+LIMIT 5
+
 
 
 

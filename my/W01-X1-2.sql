@@ -12,6 +12,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X1-2
 
 -- ▼ ここに SQL を書く
+SELECT order_id,ordered_at
+FROM orders
+WHERE ordered_at >=  '2025-12-25'
+      AND ordered_at <  '2025-12-26'
+
 
 
 

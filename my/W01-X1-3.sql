@@ -11,6 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X1-3
 
 -- ▼ ここに SQL を書く
+SELECT product_id,name,
+       ROUND(cost * 100.0/ price,1) AS cost_rate
+FROM products
+
 
 
 
