@@ -11,7 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X2-2
 
 -- ▼ ここに SQL を書く
-
+SELECT COUNT(*) AS cnt
+FROM customers
+WHERE referrer_id <> 1
+      OR referrer_id IS NULL
 
 
 -- ─── テーブル早見表 ───

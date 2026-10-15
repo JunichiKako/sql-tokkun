@@ -11,6 +11,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X2-3
 
 -- ▼ ここに SQL を書く
+SELECT employee_id,name,
+       CASE WHEN job_title = '代表取締役' THEN 'CEO'
+       WHEN job_title = '部長' THEN 'Manager'
+       WHEN job_title = '課長' THEN 'Leader'
+       ELSE 'Staff'
+       END
+
+FROM employees
 
 
 

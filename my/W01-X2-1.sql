@@ -11,6 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X2-1
 
 -- ▼ ここに SQL を書く
+SELECT customer_id, email
+FROM customers
+WHERE email LIKE '%@example.jp'
 
 
 
