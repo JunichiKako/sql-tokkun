@@ -11,6 +11,13 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X3-3
 
 -- ▼ ここに SQL を書く
+SELECT order_item_id,
+       quantity * unit_price AS amount,
+       CASE  WHEN quantity * unit_price < 3000 THEN '小'
+       WHEN  quantity * unit_price <  10000 THEN '中'
+       ELSE '大' 
+       END AS size
+FROM order_items
 
 
 

@@ -12,7 +12,10 @@
 
 -- ▼ ここに SQL を書く
 
-
+SELECT product_id, name
+FROM products
+WHERE name LIKE '%ニット%'
+      OR name LIKE '%シャツ%'
 
 -- ─── テーブル早見表 ───
 -- 読み方: テーブル名(列名, 列名, ...)。このDBにある全テーブルと全列を並べてある
