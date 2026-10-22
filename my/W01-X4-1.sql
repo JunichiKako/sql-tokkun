@@ -12,7 +12,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X4-1
 
 -- ▼ ここに SQL を書く
-
+SELECT review_id, created_at
+FROM reviews
+WHERE created_at >= '2025-01-01'
+      AND created_at < '2026-01-01'
+      AND rating = 5
+      AND comment IS NULL
+ORDER BY created_at, review_id
+LIMIT 10
 
 
 -- ─── テーブル早見表 ───

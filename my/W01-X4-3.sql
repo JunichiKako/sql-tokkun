@@ -13,6 +13,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X4-3
 
 -- ▼ ここに SQL を書く
+SELECT product_id, name, 
+       price - cost AS margin,
+       ROUND((price - cost) * 100.0 / price, 1) AS margin_rate 
+FROM products
+WHERE price - cost >= 5000
+      AND (price - cost) * 100.0 / price >= 50
+ORDER BY margin_rate DESC, product_id
+
 
 
 

@@ -11,7 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X4-2
 
 -- ▼ ここに SQL を書く
-
+SELECT customer_id, name, COALESCE(email, '未登録') AS contact
+FROM customers
+WHERE gender IS NULL
 
 
 -- ─── テーブル早見表 ───
