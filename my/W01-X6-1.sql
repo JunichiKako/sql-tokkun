@@ -12,6 +12,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X6-1
 
 -- ▼ ここに SQL を書く
+SELECT name, CAST(ROUND(salary / 12.0)AS INTEGER) AS monthly
+FROM employees
+WHERE ROUND(salary / 12.0) >= 500000
+ORDER BY monthly DESC, employee_id
+LIMIT 5
 
 
 

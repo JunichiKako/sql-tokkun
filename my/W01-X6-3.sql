@@ -12,7 +12,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X6-3
 
 -- ▼ ここに SQL を書く
-
+SELECT product_id, name, released_on
+FROM products
+WHERE is_discontinued = 0
+ORDER BY released_on DESC,product_id
+LIMIT 8 OFFSET 16
 
 
 -- ─── テーブル早見表 ───

@@ -12,6 +12,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X6-2
 
 -- ▼ ここに SQL を書く
+SELECT COUNT(*) AS cnt
+FROM reviews
+WHERE rating >= 4
+  AND (comment NOT LIKE '%です%' OR comment IS NULL)
 
 
 
