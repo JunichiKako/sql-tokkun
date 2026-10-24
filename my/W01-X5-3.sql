@@ -12,6 +12,17 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X5-3
 
 -- ▼ ここに SQL を書く
+SELECT log_id, path,
+        CASE WHEN path = '/' THEN 'トップ'
+        WHEN path = '/products' THEN '一覧'
+        WHEN path LIKE '/products/%' THEN '商品詳細'
+        ELSE '購入フロー'
+        END AS page_type
+FROM access_logs
+WHERE accessed_at >= '2025-12-31'
+  AND accessed_at <  '2026-01-01'
+
+
 
 
 

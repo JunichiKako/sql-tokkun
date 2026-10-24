@@ -11,6 +11,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X5-1
 
 -- ▼ ここに SQL を書く
+SELECT COUNT(*) AS cnt
+FROM orders
+WHERE ordered_at >= '2025-01-01'
+      AND ordered_at < '2025-07-01'
+      AND payment_method <> 'credit_card'
+      AND coupon_code IS NOT NULL
+
+
 
 
 

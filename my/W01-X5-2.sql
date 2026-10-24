@@ -12,6 +12,15 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X5-2
 
 -- ▼ ここに SQL を書く
+SELECT customer_id, name, birth_date, registered_at
+FROM customers
+WHERE registered_at >= '2023-01-01'
+      AND registered_at <= '2023-12-31'
+      AND birth_date >= '1990-01-01'
+      AND birth_date <= '1999-12-31'
+ORDER BY registered_at
+
+
 
 
 
