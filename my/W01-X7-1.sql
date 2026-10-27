@@ -11,6 +11,16 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X7-1
 
 -- ▼ ここに SQL を書く
+SELECT order_id, 
+       CASE status WHEN 'completed' THEN '完了'
+                   WHEN 'shipped' THEN '発送済' 
+                   WHEN 'pending' THEN '保留'
+                   WHEN 'cancelled' THEN 'キャンセル'
+                   END AS status_label,
+                   COALESCE(coupon_code, 'なし') AS coupon
+FROM orders
+WHERE ordered_at >= '2025-12-24' AND ordered_at < '2025-12-25'
+
 
 
 

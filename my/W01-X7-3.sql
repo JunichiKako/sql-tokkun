@@ -13,7 +13,12 @@
 
 -- ▼ ここに SQL を書く
 
-
+SELECT order_item_id, quantity, unit_price,
+       CAST(ROUND(quantity * unit_price * 1.1) AS INTEGER) AS amount_with_tax
+FROM order_items
+WHERE  ROUND(quantity * unit_price * 1.1) >= 30000
+ORDER BY amount_with_tax DESC, order_item_id
+LIMIT 10 OFFSET 10
 
 -- ─── テーブル早見表 ───
 -- 読み方: テーブル名(列名, 列名, ...)。このDBにある全テーブルと全列を並べてある

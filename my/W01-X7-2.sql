@@ -11,6 +11,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W01-X7-2
 
 -- ▼ ここに SQL を書く
+SELECT COUNT(*) AS cnt
+FROM customers
+WHERE prefecture <> '東京都'
+      AND email IS NOT NULL
+      AND (gender <> 'F' OR gender IS NULL)
+
 
 
 
