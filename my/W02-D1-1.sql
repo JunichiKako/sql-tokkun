@@ -11,7 +11,8 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D1-1
 
 -- ▼ ここに SQL を書く
-
+SELECT COUNT(*) AS cnt, ROUND(AVG(price),1) AS avg_price, MAX(price) AS max_price, MIN(price) AS min_price
+FROM products
 
 
 -- ─── テーブル早見表 ───

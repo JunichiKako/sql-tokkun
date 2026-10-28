@@ -11,6 +11,8 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D1-2
 
 -- ▼ ここに SQL を書く
+SELECT COUNT(*) AS total, COUNT(email) AS with_email, COUNT(DISTINCT(prefecture)) AS prefectures
+FROM customers
 
 
 

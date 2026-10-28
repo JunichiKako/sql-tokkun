@@ -11,6 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D1-3
 
 -- ▼ ここに SQL を書く
+SELECT SUM(quantity) AS total_qty, SUM(quantity * unit_price) AS total_amount,
+       ROUND(AVG(quantity * unit_price),1) AS avg_amount
+FROM order_items
 
 
 
