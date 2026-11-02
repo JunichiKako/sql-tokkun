@@ -12,6 +12,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D1-R3
 
 -- ▼ ここに SQL を書く
+SELECT SUM(price - cost) AS total_margin, ROUND(AVG(price - cost),1) AS avg_margin,
+       ROUND(AVG(cost * 100.0 / price),1) AS avg_cost_rate
+FROM products
 
 
 

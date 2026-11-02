@@ -11,6 +11,8 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D1-R2
 
 -- ▼ ここに SQL を書く
+SELECT COUNT(*) AS total, COUNT(comment) AS with_comment, COUNT(DISTINCT(customer_id)) AS reviewers
+FROM reviews
 
 
 

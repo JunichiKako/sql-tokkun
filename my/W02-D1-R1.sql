@@ -12,6 +12,8 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT COUNT(*) AS cnt, ROUND(AVG(salary)) AS avg_salary, MAX(salary) AS max_salary, MIN(salary) AS min_salary
+FROM employees
 
 
 -- ─── テーブル早見表 ───
