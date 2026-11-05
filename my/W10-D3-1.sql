@@ -1,5 +1,11 @@
 -- W10-D3-1 ★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 3: DELETE と UPSERT
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   DELETE … 行を削除する
+--       DELETE FROM reviews
+--       WHERE comment IS NULL AND rating = 3;
+--   UPDATE と同じく、WHERE を書き忘れると全行が消える。
+--
 -- 【問題】
 -- コメントがなく（NULL）、評価が 3 のレビューを削除せよ。
 --

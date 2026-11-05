@@ -1,5 +1,14 @@
 -- W08-D2-2 ★★★   Week 8: ウィンドウ関数 (2) 前後の行・累計・フレーム / Day 2: 累計と移動平均
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   ROWS BETWEEN … ウィンドウ関数が計算に使う行の範囲（フレーム）を指定する
+--       AVG(sales) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)
+--   「6行前から現在の行まで」の7行の平均（7日移動平均）。
+--       UNBOUNDED PRECEDING … 先頭の行から
+--       n PRECEDING / n FOLLOWING … n 行前 / n 行後
+--       CURRENT ROW … 現在の行
+--       UNBOUNDED FOLLOWING … 最後の行まで
+--
 -- 【問題】
 -- 2025年11月の各日について、completed の日次売上と、その日を含む直近7日間の移動平均（整数に四捨五入）を求めよ。10月末の日も平均の計算には含めること。日付の昇順。（この期間は売上のない日が存在しないので、行ベースのフレームで計算してよい。売上のない日がある場合の厳密版は W09-D3-2 で扱う）
 --

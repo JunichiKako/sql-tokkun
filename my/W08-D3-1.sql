@@ -1,5 +1,10 @@
 -- W08-D3-1 ★★★   Week 8: ウィンドウ関数 (2) 前後の行・累計・フレーム / Day 3: フレームと FIRST_VALUE / LAST_VALUE
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   FIRST_VALUE(列) … ウィンドウ内で、並び順の最初の行の値を各行に付ける
+--       FIRST_VALUE(name) OVER (PARTITION BY category_id ORDER BY price, product_id)
+--   カテゴリ内で最も安い商品の名前を、カテゴリの全行に付ける。
+--
 -- 【問題】
 -- 全商品について、同じカテゴリで最も安い商品の名前（同額なら product_id の小さい方）を各行に付けよ。
 --

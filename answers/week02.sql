@@ -110,6 +110,13 @@ ORDER BY ym;
 -- ## Day 3: HAVING
 
 -- [W02-D3-1] ★★
+-- 新構文: HAVING … GROUP BY でまとめた「グループ」を条件で絞り込む
+-- |     SELECT prefecture, COUNT(*) FROM customers
+-- |     GROUP BY prefecture
+-- |     HAVING COUNT(*) >= 10      -- 顧客が10人以上の都道府県だけ
+-- | WHERE との違い: WHERE は集計の「前」に1行ずつ絞る。HAVING は集計の「後」にグループを絞る。
+-- | COUNT や SUM を使った条件は WHERE には書けず、HAVING に書く。
+-- | 書く順番: WHERE → GROUP BY → HAVING → ORDER BY
 -- 問: キャンセル以外の注文が 30 回以上ある顧客の ID と注文回数を求めよ。
 -- 出力: customer_id, order_cnt
 -- 解説: WHERE は集計「前」の行の絞り込み、HAVING は集計「後」のグループの絞り込み。
@@ -166,6 +173,11 @@ HAVING COUNT(*) >= 5 AND AVG(salary) >= 6500000;
 -- ## Day 4: 条件付き集計
 
 -- [W02-D4-1] ★★ ordered
+-- 新構文: SUM(CASE WHEN 条件 THEN 1 ELSE 0 END) … 条件に合う行だけを数える（条件付き集計）
+-- |     SELECT SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_cnt
+-- |     FROM orders
+-- | CASE で「当てはまる行は 1、それ以外は 0」に変換してから合計すると、当てはまる行の数になる。
+-- | 1つの SELECT の中に条件違いの SUM(CASE ...) を並べれば、件数を横に並べられる。
 -- 問: 月ごと（'YYYY-MM'）に、completed の注文件数と cancelled の注文件数を横に並べて求めよ。月の昇順。
 -- 出力: ym, completed_cnt, cancelled_cnt
 -- ヒント: SUM(CASE WHEN 条件 THEN 1 ELSE 0 END)。
@@ -244,6 +256,9 @@ FROM employees
 GROUP BY department_id;
 
 -- [W02-D5-2] ★★ ordered
+-- 新構文: strftime('%w', 日時) … 曜日を 0（日曜）〜 6（土曜）の数字で取り出す
+-- |     strftime('%w', '2025-03-14 10:00:00')   → '5'（金曜）
+-- | 結果は文字列なので、数値として扱いたいときは CAST(... AS INTEGER) する。
 -- 問: 曜日ごとの注文件数を求めよ。曜日は 0=日曜 〜 6=土曜 の整数で表し、その昇順に並べること。
 -- 出力: dow, cnt
 -- ヒント: strftime('%w', ordered_at) は文字列を返すので CAST する。
@@ -272,6 +287,9 @@ FROM customers
 GROUP BY referrer_id;
 
 -- [W02-D5-R2] ★★ ordered
+-- 新構文: strftime('%H', 日時) … 「時」を 00〜23 の2桁で取り出す
+-- |     strftime('%H', '2025-03-14 09:30:00')   → '09'
+-- | 結果は文字列なので、整数にするなら CAST(... AS INTEGER)。
 -- 問: 時間帯ごとのアクセス件数を求めよ。時間帯は 0〜23 の整数（アクセス日時の「時」）で表し、その昇順に並べること。
 -- 出力: hour, cnt
 -- ヒント: strftime('%H', accessed_at) は '07' のような文字列を返すので CAST する。

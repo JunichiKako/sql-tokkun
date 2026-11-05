@@ -3,6 +3,14 @@
 -- ## Day 1: 実行計画とインデックス
 
 -- [W11-D1-1] ★★ nocheck
+-- 新構文: CREATE INDEX / EXPLAIN QUERY PLAN
+-- |     CREATE INDEX idx_orders_customer ON orders (customer_id);   -- インデックスを作る（名前は自由）
+-- |     EXPLAIN QUERY PLAN SELECT * FROM orders WHERE customer_id = 10;   -- 実行計画を見る
+-- | ・インデックス: 本の索引のようなもの。指定した列で探すときに、全行を見ずに目的の行へ飛べる
+-- | ・EXPLAIN QUERY PLAN: クエリを実行せず、DB がどう処理するつもりかを表示する
+-- |     SCAN orders                     … 全行を順に読む（遅い）
+-- |     SEARCH orders USING INDEX ...   … インデックスで探す（速い）
+-- | PostgreSQL / MySQL では EXPLAIN（実際に測るなら EXPLAIN ANALYZE）。
 -- 問: `SELECT * FROM orders WHERE customer_id = 10;` の実行計画を `EXPLAIN QUERY PLAN` で確認せよ。全件走査（SCAN）になっているはずなので、インデックス検索（SEARCH）に変わるようインデックスを作成し、実行計画がどう変わったか確かめよ。
 -- | （インデックスを作る文と EXPLAIN QUERY PLAN の文を、この順で解答ファイルに書いて実行する）
 -- 解説: 作成前は `SCAN orders`、作成後は `SEARCH orders USING INDEX idx_orders_customer (customer_id=?)` になる。PostgreSQL / MySQL では EXPLAIN（実測は EXPLAIN ANALYZE）。
@@ -78,6 +86,9 @@ FROM orders
 WHERE ordered_at >= '2025-01-01' AND ordered_at < '2026-01-01';
 
 -- [W11-D2-2] ★★ nocheck
+-- 新構文: 式インデックス … 列そのものではなく、式の結果にインデックスを張る
+-- |     CREATE INDEX idx_customers_email_lower ON customers (lower(email));
+-- | WHERE lower(email) = ... のように、列を関数で包んだ条件でもインデックスが使えるようになる。
 -- 問: `SELECT customer_id FROM customers WHERE lower(email) = 'watanabe33@example.com';` は email 列に普通のインデックスを張っても速くならない。このクエリのままインデックスが使われるようにせよ。
 -- 解説: 式インデックス（関数インデックス）を作る。PostgreSQL も同じ構文。MySQL 8.0 は ((lower(email))) と二重括弧で書く。
 CREATE INDEX idx_customers_email_lower ON customers (lower(email));

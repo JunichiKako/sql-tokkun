@@ -1,5 +1,12 @@
 -- W04-D4-3 ★★   Week 4: サブクエリと集合演算 / Day 4: 集合演算（UNION / INTERSECT / EXCEPT）
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   EXCEPT … 1つ目の SELECT の結果から、2つ目の結果に含まれる行を取り除く（差集合）
+--       SELECT customer_id FROM ... 上半期の購入者
+--       EXCEPT
+--       SELECT customer_id FROM ... 下半期の購入者
+--   上下を入れ替えると結果が変わる。Oracle では MINUS という名前。
+--
 -- 【問題】
 -- 2025年の上半期（1〜6月）には completed の注文があるのに、下半期（7〜12月）には1件もない顧客の ID を求めよ。
 --

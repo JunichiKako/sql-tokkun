@@ -3,6 +3,9 @@
 -- ## Day 1: LAG / LEAD
 
 -- [W08-D1-1] ★★ ordered
+-- 新構文: LAG(列) … 並び順で1つ前の行の値を取ってくる
+-- |     SELECT ym, sales, LAG(sales) OVER (ORDER BY ym) AS prev_sales FROM monthly
+-- | 前の行がない最初の行は NULL になる。LAG(列, 12) のように2つ目の引数で「何行前か」を指定できる。
 -- 問: 月次（'YYYY-MM'）の completed 売上について、前月の売上と前月比の伸び率（百分率、小数第1位まで）を LAG を使って求めよ（W06-D3-3 の別解）。月の昇順。
 -- 出力: ym, sales, prev_sales, mom
 WITH monthly AS (
@@ -55,6 +58,9 @@ ORDER BY ym;
 -- ## Day 1 定着: LAG / LEAD
 
 -- [W08-D1-R1] ★★ ordered
+-- 新構文: LEAD(列) … LAG の逆。並び順で1つ後の行の値を取ってくる
+-- |     LEAD(orders) OVER (ORDER BY ym)   -- 翌月の値
+-- | 後の行がない最後の行は NULL になる。
 -- 問: 2025年の各月（'YYYY-MM'）について、completed の注文件数・翌月の注文件数・翌月との増減（翌月 − 当月）を LEAD を使って求めよ。2025年12月の翌月はデータがないので NULL でよい。月の昇順。
 -- 出力: ym, orders, next_orders, diff
 WITH monthly AS (
@@ -108,6 +114,10 @@ ORDER BY yq;
 -- ## Day 2: 累計と移動平均
 
 -- [W08-D2-1] ★★ ordered
+-- 新構文: SUM(列) OVER (ORDER BY ...) … 累計（ランニングトータル）
+-- |     SELECT ym, sales, SUM(sales) OVER (ORDER BY ym) AS cumulative FROM monthly
+-- | OVER に ORDER BY を書くと、「先頭の行から現在の行まで」の合計になる。
+-- | PARTITION BY と組み合わせれば、顧客ごとの累計なども出せる。
 -- 問: 2025年の月次 completed 売上と、年初からの累計を求めよ。月の昇順。
 -- 出力: ym, sales, cumulative
 WITH monthly AS (
@@ -123,6 +133,13 @@ FROM monthly
 ORDER BY ym;
 
 -- [W08-D2-2] ★★★ ordered
+-- 新構文: ROWS BETWEEN … ウィンドウ関数が計算に使う行の範囲（フレーム）を指定する
+-- |     AVG(sales) OVER (ORDER BY day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)
+-- | 「6行前から現在の行まで」の7行の平均（7日移動平均）。
+-- |     UNBOUNDED PRECEDING … 先頭の行から
+-- |     n PRECEDING / n FOLLOWING … n 行前 / n 行後
+-- |     CURRENT ROW … 現在の行
+-- |     UNBOUNDED FOLLOWING … 最後の行まで
 -- 問: 2025年11月の各日について、completed の日次売上と、その日を含む直近7日間の移動平均（整数に四捨五入）を求めよ。10月末の日も平均の計算には含めること。日付の昇順。（この期間は売上のない日が存在しないので、行ベースのフレームで計算してよい。売上のない日がある場合の厳密版は W09-D3-2 で扱う）
 -- 出力: day, sales, ma7
 -- ヒント: ROWS BETWEEN 6 PRECEDING AND CURRENT ROW。先に11月で絞ると、月初の平均に10月分が入らなくなる。
@@ -215,6 +232,9 @@ WHERE cumulative_qty >= 100
 -- ## Day 3: フレームと FIRST_VALUE / LAST_VALUE
 
 -- [W08-D3-1] ★★★
+-- 新構文: FIRST_VALUE(列) … ウィンドウ内で、並び順の最初の行の値を各行に付ける
+-- |     FIRST_VALUE(name) OVER (PARTITION BY category_id ORDER BY price, product_id)
+-- | カテゴリ内で最も安い商品の名前を、カテゴリの全行に付ける。
 -- 問: 全商品について、同じカテゴリで最も安い商品の名前（同額なら product_id の小さい方）を各行に付けよ。
 -- 出力: product_id, name, price, cheapest_in_category
 SELECT product_id, name, price,
@@ -222,6 +242,13 @@ SELECT product_id, name, price,
 FROM products;
 
 -- [W08-D3-2] ★★★
+-- 新構文: LAST_VALUE(列) … ウィンドウ内で、並び順の最後の行の値を取る
+-- | 注意: ORDER BY を書いたときのデフォルトのフレームは「先頭〜現在の行」なので、そのままだと自分自身の値を返す。
+-- | パーティション全体を見るには、フレームを明示する。
+-- |     LAST_VALUE(name) OVER (
+-- |       PARTITION BY department_id ORDER BY salary, employee_id
+-- |       ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+-- |     )
 -- 問: 部署に所属している社員について、同じ部署で最も年収が高い社員の名前（同額なら employee_id の大きい方）を、LAST_VALUE を使って各行に付けよ。
 -- 出力: name, department_id, salary, top_earner
 -- ヒント: ORDER BY を書いたときのデフォルトのフレームは「先頭〜現在行」。そのままだと LAST_VALUE は自分自身を返す。
@@ -236,6 +263,11 @@ FROM employees
 WHERE department_id IS NOT NULL;
 
 -- [W08-D3-3] ★★★ ordered
+-- 新構文: RANGE と ROWS … フレームの数え方の違い
+-- |     SUM(salary) OVER (ORDER BY salary)                           -- デフォルトは RANGE
+-- |     SUM(salary) OVER (ORDER BY salary ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+-- | RANGE は ORDER BY の値が同じ行（同額の社員など）をまとめて1つとして扱うので、同額の行は同じ累計になる。
+-- | ROWS は1行ずつ数えるので、並び順どおりに1行ずつ足されていく。
 -- 問: 全社員を年収の低い順（同額なら employee_id 順）に並べ、年収の累計を2通り求めよ。(1) running_range: `ORDER BY salary` のみを指定したデフォルトのフレームでの累計（同額の行は同じ値になる）。(2) running_rows: 並び順どおりに1行ずつ足していく累計。
 -- 出力: name, salary, running_range, running_rows
 -- 解説: デフォルトは RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW で、ORDER BY の値が同じ行（ピア）をまとめて含む。1行ずつ足したいなら ROWS を明示し、並び順を一意にする。
@@ -280,6 +312,9 @@ ORDER BY price, product_id;
 -- ## Day 4: NTILE と中央値
 
 -- [W08-D4-1] ★★★ ordered
+-- 新構文: NTILE(n) … 並び順でn個のグループに均等に分け、1〜n のグループ番号を付ける
+-- |     NTILE(10) OVER (ORDER BY total DESC, customer_id)   -- 上位から10等分（デシル分析）
+-- | 割り切れないときは、前のグループから1行ずつ多くなる。
 -- 問: デシル分析。completed の購入総額がある顧客を、総額の高い順（同額なら customer_id 順）に10等分し、グループ（1 が最上位）ごとの顧客数・売上合計・全体に占める売上構成比（百分率、小数第1位まで）を求めよ。グループ番号の昇順。
 -- 出力: decile, customers, total_sales, share
 WITH customer_totals AS (

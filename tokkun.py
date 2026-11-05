@@ -23,9 +23,9 @@ ANSWERS = ROOT / "answers"
 MY = ROOT / "my"
 
 MARK = re.compile(r"^-- \[(W\d{2}-[DX]\d-R?\d)\]\s*(.*)$")  # R 付きは定着の日、X は復習週の問題
-FIELD = re.compile(r"^-- (問|出力|ヒント|確認|解説): ?(.*)$")
+FIELD = re.compile(r"^-- (問|出力|ヒント|確認|解説|新構文): ?(.*)$")
 CONT = re.compile(r"^-- \| ?(.*)$")
-FIELDS = {"問": "question", "出力": "output", "ヒント": "hint", "確認": "verify", "解説": "note"}
+FIELDS = {"問": "question", "出力": "output", "ヒント": "hint", "確認": "verify", "解説": "note", "新構文": "intro"}
 
 
 def parse(path):
@@ -43,7 +43,7 @@ def parse(path):
             flags = m.group(2).split()
             cur = {"id": m.group(1), "week": week, "day": day, "flags": set(flags),
                    "stars": next((f for f in flags if f.startswith("★")), ""),
-                   "question": "", "output": "", "hint": "", "verify": "", "note": "",
+                   "question": "", "output": "", "hint": "", "verify": "", "note": "", "intro": "",
                    "sql": [], "in_sql": False}
             problems.append(cur)
             continue
@@ -156,7 +156,12 @@ def init(problems):
         if path.exists():
             continue
         question = [ln for ln in p["question"].split("\n") if not ln.startswith("```")]
-        out = [f"-- {p['id']} {p['stars']}   {p['week']} / {p['day']}", "--", "-- 【問題】"]
+        out = [f"-- {p['id']} {p['stars']}   {p['week']} / {p['day']}", "--"]
+        if p["intro"]:
+            out.append("-- 【はじめて出てくる構文】 先に読んでから問題へ")
+            out += [f"--   {ln}" if ln else "--" for ln in p["intro"].split("\n")]
+            out.append("--")
+        out.append("-- 【問題】")
         out += [f"-- {ln}" for ln in question]
         out.append("--")
         if p["output"]:

@@ -1,5 +1,17 @@
 -- W06-D1-1 ★★   Week 6: CTE（WITH 句）と多段集計 / Day 1: CTE の基本
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   WITH（CTE）… クエリの途中結果に名前を付け、後のクエリでテーブルのように使う
+--       WITH customer_totals AS (
+--         SELECT customer_id, SUM(...) AS total FROM ... GROUP BY customer_id
+--       )
+--       SELECT * FROM customer_totals WHERE total > 100000
+--   派生テーブル（FROM 句のサブクエリ）と同じことを、上から順に読める形で書ける。
+--   カンマで区切って複数書け、後のものから前のものを参照できる。
+--       WITH a AS (...),
+--            b AS (SELECT ... FROM a)
+--       SELECT ... FROM b
+--
 -- 【問題】
 -- CTE で「顧客ごとの completed 購入総額」を作り、購入総額の上位10人を取得せよ。総額の高い順、同額なら customer_id 順。
 --

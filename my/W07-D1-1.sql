@@ -1,5 +1,18 @@
 -- W07-D1-1 ★★   Week 7: ウィンドウ関数 (1) 順位とパーティション / Day 1: ROW_NUMBER / RANK / DENSE_RANK
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   ウィンドウ関数 … 行をまとめずに、各行に「順位」や「集計値」を付ける
+--       SELECT name, salary,
+--              RANK()       OVER (ORDER BY salary DESC) AS rnk,
+--              DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk,
+--              ROW_NUMBER() OVER (ORDER BY salary DESC, employee_id) AS row_num
+--       FROM employees
+--   ・OVER (ORDER BY ...) で、どの順番で順位を付けるかを指定する
+--   ・RANK: 同じ値は同順位、次は番号が飛ぶ（1, 2, 2, 4）
+--   ・DENSE_RANK: 同じ値は同順位、番号は飛ばない（1, 2, 2, 3）
+--   ・ROW_NUMBER: 同じ値でも必ず別の番号（1, 2, 3, 4）。並び順が一意になるよう第2キーを付ける
+--   GROUP BY と違い、行の数は減らない。
+--
 -- 【問題】
 -- 全社員に年収の高い順で順位を付けよ。RANK（同順位の次は番号が飛ぶ）、DENSE_RANK（飛ばない）、ROW_NUMBER（同額なら employee_id の小さい方が先の通し番号）の3種類を並べること。
 --

@@ -1,5 +1,12 @@
 -- W10-D2-3 ★★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 2: UPDATE
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   UPDATE の WHERE にサブクエリを使う
+--       UPDATE products
+--       SET is_discontinued = 1
+--       WHERE NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.product_id = products.product_id);
+--   サブクエリの中で、更新中のテーブルの列を products.product_id のようにテーブル名付きで参照できる。
+--
 -- 【問題】
 -- 一度も注文されたことがない商品（ステータスは問わない）を、すべて販売終了（is_discontinued = 1）にせよ。
 --

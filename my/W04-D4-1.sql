@@ -1,5 +1,14 @@
 -- W04-D4-1 ★★   Week 4: サブクエリと集合演算 / Day 4: 集合演算（UNION / INTERSECT / EXCEPT）
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   UNION ALL … 2つの SELECT の結果を縦につなげる
+--       SELECT 'registered', registered_at FROM customers WHERE ...
+--       UNION ALL
+--       SELECT 'ordered', ordered_at FROM orders WHERE ...
+--   ・2つの SELECT の列の数と並びをそろえる
+--   ・UNION（ALL なし）は重複行を1つにまとめる。重複を消す必要がなければ速い UNION ALL を使う
+--   ・ORDER BY は最後に1回だけ書き、全体を並べ替える
+--
 -- 【問題】
 -- 顧客ID 1 の行動履歴を1つの時系列にまとめよ。会員登録を 'registered'、注文を 'ordered' というイベント種別で表し、日時の昇順に並べること。
 --

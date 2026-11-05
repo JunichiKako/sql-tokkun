@@ -1,5 +1,10 @@
 -- W10-D4-3 ★★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 4: テーブル定義・制約・ビュー
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   ALTER TABLE ... ADD COLUMN … 既存のテーブルに列を追加する
+--       ALTER TABLE customers ADD COLUMN tier TEXT NOT NULL DEFAULT 'regular';
+--   既存の行には DEFAULT の値が入る。NOT NULL の列を追加するときは DEFAULT が必要。
+--
 -- 【問題】
 -- customers テーブルに会員ランクの列 tier（文字列・NOT NULL・デフォルト 'regular'）を追加し、completed の購入総額が 200,000 円以上の顧客を 'gold'、50,000 円以上 200,000 円未満の顧客を 'silver' に更新せよ。
 --

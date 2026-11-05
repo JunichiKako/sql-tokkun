@@ -1,5 +1,12 @@
 -- W07-D2-3 ★★★   Week 7: ウィンドウ関数 (1) 順位とパーティション / Day 2: PARTITION BY と集約ウィンドウ
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   SUM(SUM(...)) OVER () … GROUP BY の集計結果に、さらにウィンドウ関数を掛ける
+--       SELECT category, SUM(amount) AS sales,
+--              SUM(amount) * 100.0 / SUM(SUM(amount)) OVER () AS share
+--       FROM ... GROUP BY category
+--   内側の SUM が GROUP BY の集計（カテゴリ別売上）、外側の SUM ... OVER () がその全体合計。
+--
 -- 【問題】
 -- カテゴリ（商品が直接属するカテゴリ）ごとの completed 売上と構成比（百分率、小数第1位まで）を、今度はウィンドウ関数で求めよ（W06-D3-1 の別解）。
 --

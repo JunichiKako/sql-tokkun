@@ -1,5 +1,14 @@
 -- W08-D3-2 ★★★   Week 8: ウィンドウ関数 (2) 前後の行・累計・フレーム / Day 3: フレームと FIRST_VALUE / LAST_VALUE
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   LAST_VALUE(列) … ウィンドウ内で、並び順の最後の行の値を取る
+--   注意: ORDER BY を書いたときのデフォルトのフレームは「先頭〜現在の行」なので、そのままだと自分自身の値を返す。
+--   パーティション全体を見るには、フレームを明示する。
+--       LAST_VALUE(name) OVER (
+--         PARTITION BY department_id ORDER BY salary, employee_id
+--         ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+--       )
+--
 -- 【問題】
 -- 部署に所属している社員について、同じ部署で最も年収が高い社員の名前（同額なら employee_id の大きい方）を、LAST_VALUE を使って各行に付けよ。
 --

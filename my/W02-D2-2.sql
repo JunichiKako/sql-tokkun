@@ -12,6 +12,9 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT status, COUNT(*)
+FROM orders
+GROUP BY status
 
 
 -- ─── テーブル早見表 ───

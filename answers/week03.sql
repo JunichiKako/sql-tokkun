@@ -3,6 +3,14 @@
 -- ## Day 1: INNER JOIN
 
 -- [W03-D1-1] ★
+-- 新構文: JOIN（INNER JOIN）… 2つのテーブルを、対応する列でつないで1つの表にする
+-- |     SELECT p.name, c.name
+-- |     FROM products p
+-- |     JOIN categories c ON c.category_id = p.category_id
+-- | ・FROM products p の p は「テーブルの別名」。以降は products の代わりに p と書ける
+-- | ・ON の後ろに「どの列とどの列が対応するか」を書く
+-- | ・両方のテーブルに同じ名前の列（name など）があるので、p.name / c.name のように「別名.列名」で区別する
+-- | ・INNER JOIN は、相手が見つかった行だけが残る（相手のいない行は消える）
 -- 問: 全商品について、商品名と所属カテゴリ名を取得せよ。
 -- 出力: product_id, product_name, category_name
 SELECT p.product_id, p.name AS product_name, c.name AS category_name
@@ -60,6 +68,12 @@ GROUP BY o.order_id, c.name;
 -- ## Day 2: LEFT JOIN
 
 -- [W03-D2-1] ★★
+-- 新構文: LEFT JOIN … 左側（FROM に書いた方）のテーブルの行を、相手がいなくても全部残す
+-- |     SELECT c.customer_id, o.order_id
+-- |     FROM customers c
+-- |     LEFT JOIN orders o ON o.customer_id = c.customer_id
+-- | 注文が1件もない顧客も1行残り、相手側の列（o.order_id など）は NULL になる。
+-- | COUNT(o.order_id) と書くと NULL を数えないので、注文0件の顧客は 0 になる（COUNT(*) だと 1 になってしまう）。
 -- 問: 全顧客について注文回数（ステータスは問わない）を求めよ。一度も注文していない顧客は 0 と表示すること。
 -- 出力: customer_id, name, order_cnt
 -- ヒント: COUNT(*) だと注文0件の顧客も 1 になってしまう。
@@ -262,6 +276,11 @@ LEFT JOIN employees e ON e.department_id = d.department_id
 GROUP BY d.department_id, d.name;
 
 -- [W03-D5-2] ★★★
+-- 新構文: FROM 句のサブクエリ … SELECT の結果を、1つのテーブルのように扱う
+-- |     SELECT COUNT(*)
+-- |     FROM (SELECT DISTINCT customer_id FROM orders) AS t
+-- | 括弧の中の SELECT を先に実行し、その結果に AS t と名前を付けて、外側の SELECT の材料にする。
+-- | 詳しくは Week 4 で扱う。
 -- 問: completed の注文で購入された「顧客 × 商品」の組み合わせのうち、その顧客がその商品のレビューをまだ書いていない組み合わせは何組あるか。
 -- 出力: cnt
 -- ヒント: 同じ顧客が同じ商品を複数回買っていても1組と数える。DISTINCT した結果をサブクエリにして数える。

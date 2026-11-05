@@ -3,12 +3,26 @@
 -- ## Day 1: INSERT
 
 -- [W10-D1-1] ★
+-- 新構文: INSERT … テーブルに行を追加する
+-- |     INSERT INTO categories (category_id, name, parent_id)
+-- |     VALUES (22, '文房具', NULL);
+-- | 列名の並びと VALUES の値の並びを対応させる。
+-- | ここから Week 10 は、データを変更する文（DML）を書く。採点は DB のコピーで行うので、元のデータは壊れない。
 -- 問: 最上位カテゴリとして、category_id = 22・名前 '文房具' を追加せよ。
 -- 確認: SELECT category_id, name, parent_id FROM categories WHERE category_id = 22
 INSERT INTO categories (category_id, name, parent_id)
 VALUES (22, '文房具', NULL);
 
 -- [W10-D1-2] ★★
+-- 新構文: CREATE TABLE / INSERT ... SELECT … テーブルを作り、SELECT の結果をまとめて登録する
+-- |     CREATE TABLE vip_customers (
+-- |       customer_id INTEGER PRIMARY KEY,   -- 主キー（重複不可・1行を特定する列）
+-- |       name        TEXT NOT NULL,         -- NOT NULL: NULL を入れられない
+-- |       total       INTEGER NOT NULL
+-- |     );
+-- |     INSERT INTO vip_customers (customer_id, name, total)
+-- |     SELECT ... FROM ... ;                -- VALUES の代わりに SELECT の結果を入れる
+-- | 主な型: INTEGER（整数）、REAL（小数）、TEXT（文字列）
 -- 問: テーブル vip_customers（customer_id: 整数・主キー、name: 文字列・NOT NULL、total: 整数・NOT NULL）を作成し、completed の購入総額が 300,000 円以上の顧客を INSERT ... SELECT で登録せよ。
 -- 確認: SELECT customer_id, name, total FROM vip_customers ORDER BY customer_id
 CREATE TABLE vip_customers (
@@ -27,6 +41,9 @@ GROUP BY c.customer_id, c.name
 HAVING SUM(oi.quantity * oi.unit_price) >= 300000;
 
 -- [W10-D1-3] ★★
+-- 新構文: 複数行の INSERT と DEFAULT
+-- |     INSERT INTO t (a, b) VALUES (1, 'x'), (2, 'y');   -- カンマで区切って複数行
+-- | INSERT で列を省略すると、その列にはテーブル定義の DEFAULT 値（なければ NULL）が入る。
 -- 問: 1つの INSERT 文で、次の2商品を追加せよ。(901, 'ペーパーフィルター 100枚', カテゴリ 19, 価格 480, 原価 200, 発売日 2026-01-10) と (902, 'コーヒーミル 手挽き', カテゴリ 5, 価格 5480, 原価 2600, 発売日 2026-01-10)。is_discontinued は指定せず、デフォルト値に任せること。
 -- 確認: SELECT product_id, name, category_id, price, cost, released_on, is_discontinued FROM products WHERE product_id >= 900 ORDER BY product_id
 INSERT INTO products (product_id, name, category_id, price, cost, released_on)
@@ -66,6 +83,11 @@ VALUES (41, '新井 翔', 3, 8, '一般社員', 4000000, '2026-04-01'),
 -- ## Day 2: UPDATE
 
 -- [W10-D2-1] ★
+-- 新構文: UPDATE … 既存の行の値を変更する
+-- |     UPDATE products
+-- |     SET price = 5000
+-- |     WHERE product_id = 1;
+-- | WHERE を書き忘れると、全行が変更される。実行前に同じ WHERE で SELECT して、対象の行を確認するのが安全。
 -- 問: 商品ID 5 の価格を 10% 値上げせよ（四捨五入して整数にする）。
 -- 確認: SELECT product_id, price FROM products WHERE product_id = 5
 -- 解説: UPDATE / DELETE は必ず WHERE を確認してから実行する。先に同じ WHERE で SELECT して対象行を見るのが安全。
@@ -82,6 +104,11 @@ WHERE department_id = 3
   AND job_title = '一般社員';
 
 -- [W10-D2-3] ★★★
+-- 新構文: UPDATE の WHERE にサブクエリを使う
+-- |     UPDATE products
+-- |     SET is_discontinued = 1
+-- |     WHERE NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.product_id = products.product_id);
+-- | サブクエリの中で、更新中のテーブルの列を products.product_id のようにテーブル名付きで参照できる。
 -- 問: 一度も注文されたことがない商品（ステータスは問わない）を、すべて販売終了（is_discontinued = 1）にせよ。
 -- 確認: SELECT product_id FROM products WHERE is_discontinued = 1 ORDER BY product_id
 UPDATE products
@@ -126,6 +153,10 @@ WHERE NOT EXISTS (
 -- ## Day 3: DELETE と UPSERT
 
 -- [W10-D3-1] ★★
+-- 新構文: DELETE … 行を削除する
+-- |     DELETE FROM reviews
+-- |     WHERE comment IS NULL AND rating = 3;
+-- | UPDATE と同じく、WHERE を書き忘れると全行が消える。
 -- 問: コメントがなく（NULL）、評価が 3 のレビューを削除せよ。
 -- 確認: SELECT COUNT(*), SUM(rating) FROM reviews
 DELETE FROM reviews
@@ -142,6 +173,13 @@ WHERE order_id IN (
       );
 
 -- [W10-D3-3] ★★★
+-- 新構文: UPSERT（INSERT ... ON CONFLICT）… 行がなければ追加、すでにあれば更新する
+-- |     INSERT INTO product_stock (product_id, stock)
+-- |     VALUES (2, 3)
+-- |     ON CONFLICT (product_id) DO UPDATE SET stock = stock + excluded.stock;
+-- | ・ON CONFLICT (列): その列（主キーなど）が重複したときの動作を指定する
+-- | ・excluded.列名: 挿入しようとした値（ここでは 3）
+-- | SQLite と PostgreSQL は同じ書き方。MySQL は ON DUPLICATE KEY UPDATE。
 -- 問: テーブル product_stock（product_id: 整数・主キー、stock: 整数・NOT NULL）を作成し、初期データとして (1, 10) と (2, 5) を登録せよ。続けて、入荷データ (2, 3) と (3, 7) を「すでに行があれば stock に加算、なければ新規登録」する1つの文で反映せよ。
 -- 確認: SELECT product_id, stock FROM product_stock ORDER BY product_id
 -- ヒント: INSERT ... ON CONFLICT (product_id) DO UPDATE SET ...。挿入しようとした値は excluded.列名 で参照できる。
@@ -193,6 +231,14 @@ ON CONFLICT (day) DO UPDATE SET visits = visits + excluded.visits;
 -- ## Day 4: テーブル定義・制約・ビュー
 
 -- [W10-D4-1] ★★
+-- 新構文: 制約 … テーブルに入れてよい値のルールを決める
+-- |     CREATE TABLE coupons (
+-- |       code          TEXT PRIMARY KEY,
+-- |       discount_rate INTEGER NOT NULL CHECK (discount_rate BETWEEN 1 AND 50),
+-- |       valid_until   TEXT
+-- |     );
+-- | ・CHECK (条件): 条件を満たさない値を入れようとするとエラーになる
+-- | ・ほかに UNIQUE（重複不可）、DEFAULT 値（省略時の値）、REFERENCES（外部キー）などがある
 -- 問: クーポンのマスタテーブル coupons を作成せよ。列は code（文字列・主キー）、discount_rate（整数・NOT NULL・1〜50 の範囲のみ許可する CHECK 制約）、valid_until（文字列・NULL 可）。作成後、('WELCOME10', 10, NULL)、('SUMMER25', 15, '2025-08-31')、('WINTER25', 15, '2025-12-31')、('VIP15', 15, NULL) を登録せよ。
 -- 確認: SELECT code, discount_rate, valid_until FROM coupons ORDER BY code
 -- 解説: 制約が効いているかは、discount_rate = 80 の行を INSERT してエラーになることで自分で確かめておくこと。
@@ -209,6 +255,12 @@ VALUES ('WELCOME10', 10, NULL),
        ('VIP15', 15, NULL);
 
 -- [W10-D4-2] ★★
+-- 新構文: CREATE VIEW … SELECT 文に名前を付けて保存し、テーブルのように使えるようにする
+-- |     CREATE VIEW v_order_totals AS
+-- |     SELECT o.order_id, SUM(...) AS total FROM ... GROUP BY ...;
+-- | 
+-- |     SELECT * FROM v_order_totals WHERE total > 10000;
+-- | ビューはデータを持たず、使うたびに中の SELECT が実行される。
 -- 問: 注文ごとの合計金額を見られるビュー v_order_totals を作成せよ。列は order_id, customer_id, ordered_at, status, total（明細の 数量 × 単価 の合計）。
 -- 確認: SELECT order_id, customer_id, ordered_at, status, total FROM v_order_totals WHERE order_id <= 20 ORDER BY order_id
 CREATE VIEW v_order_totals AS
@@ -219,6 +271,9 @@ JOIN order_items oi ON oi.order_id = o.order_id
 GROUP BY o.order_id, o.customer_id, o.ordered_at, o.status;
 
 -- [W10-D4-3] ★★★
+-- 新構文: ALTER TABLE ... ADD COLUMN … 既存のテーブルに列を追加する
+-- |     ALTER TABLE customers ADD COLUMN tier TEXT NOT NULL DEFAULT 'regular';
+-- | 既存の行には DEFAULT の値が入る。NOT NULL の列を追加するときは DEFAULT が必要。
 -- 問: customers テーブルに会員ランクの列 tier（文字列・NOT NULL・デフォルト 'regular'）を追加し、completed の購入総額が 200,000 円以上の顧客を 'gold'、50,000 円以上 200,000 円未満の顧客を 'silver' に更新せよ。
 -- 確認: SELECT tier, COUNT(*) FROM customers GROUP BY tier ORDER BY tier
 -- ヒント: 相関サブクエリで顧客ごとの購入総額を求め、CASE で振り分ける。GROUP BY のない集約は、対象行が0件でも必ず1行返す。
@@ -238,6 +293,9 @@ SET tier = (
 -- ## Day 4 定着: テーブル定義・制約・ビュー
 
 -- [W10-D4-R1] ★★
+-- 新構文: UNIQUE 制約 … その列に同じ値が2回入らないようにする
+-- |     name TEXT NOT NULL UNIQUE
+-- | 主キーと違って NULL は入れられる（NOT NULL を付けなければ）。
 -- 問: 店舗テーブル shops を作成せよ。列は shop_id（整数・主キー）、name（文字列・NOT NULL・重複不可）、prefecture（文字列・NOT NULL）、opened_on（文字列・NULL 可）。作成後、(1, '渋谷店', '東京都', '2024-04-01')、(2, '梅田店', '大阪府', '2024-10-01')、(3, '天神店', '福岡県', NULL) を登録せよ。
 -- 確認: SELECT shop_id, name, prefecture, opened_on FROM shops ORDER BY shop_id
 -- 解説: 重複不可は UNIQUE 制約。同じ name の行を INSERT してエラーになることを自分で確かめておくこと。
@@ -281,6 +339,12 @@ SET rating_avg = (
 -- ## Day 5: トランザクションと総合演習
 
 -- [W10-D5-1] ★★
+-- 新構文: トランザクション（BEGIN / COMMIT / ROLLBACK）… 複数の更新を「全部成功」か「全部取り消し」にする
+-- |     BEGIN;
+-- |     INSERT INTO orders ...;
+-- |     INSERT INTO order_items ...;
+-- |     COMMIT;            -- ここで確定
+-- | 途中で問題があれば COMMIT の代わりに ROLLBACK; と書くと、BEGIN 以降の変更がすべて取り消される。
 -- 問: 新しい注文を1件、トランザクションで登録せよ。注文: order_id 9001、顧客 1、日時 '2026-01-05 10:00:00'、ステータス 'pending'、支払方法 'credit_card'、クーポンなし、送料 0。明細: 商品 1 を 2 個、商品 2 を 1 個。単価は products テーブルの現在の price をそのまま使うこと（値を直書きしない）。
 -- 確認: SELECT o.order_id, o.customer_id, o.status, oi.product_id, oi.quantity, oi.unit_price FROM orders o JOIN order_items oi ON oi.order_id = o.order_id WHERE o.order_id = 9001 ORDER BY oi.product_id
 -- 解説: 注文と明細は「両方入るか、どちらも入らないか」でないと不整合になる。途中で失敗したら ROLLBACK する。

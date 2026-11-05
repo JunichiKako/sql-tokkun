@@ -1,5 +1,14 @@
 -- W02-D3-1 ★★   Week 2: 集計（GROUP BY / HAVING） / Day 3: HAVING
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   HAVING … GROUP BY でまとめた「グループ」を条件で絞り込む
+--       SELECT prefecture, COUNT(*) FROM customers
+--       GROUP BY prefecture
+--       HAVING COUNT(*) >= 10      -- 顧客が10人以上の都道府県だけ
+--   WHERE との違い: WHERE は集計の「前」に1行ずつ絞る。HAVING は集計の「後」にグループを絞る。
+--   COUNT や SUM を使った条件は WHERE には書けず、HAVING に書く。
+--   書く順番: WHERE → GROUP BY → HAVING → ORDER BY
+--
 -- 【問題】
 -- キャンセル以外の注文が 30 回以上ある顧客の ID と注文回数を求めよ。
 --

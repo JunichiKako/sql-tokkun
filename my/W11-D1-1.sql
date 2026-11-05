@@ -1,5 +1,15 @@
 -- W11-D1-1 ★★   Week 11: インデックス・実行計画・クエリの書き換え / Day 1: 実行計画とインデックス
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   CREATE INDEX / EXPLAIN QUERY PLAN
+--       CREATE INDEX idx_orders_customer ON orders (customer_id);   -- インデックスを作る（名前は自由）
+--       EXPLAIN QUERY PLAN SELECT * FROM orders WHERE customer_id = 10;   -- 実行計画を見る
+--   ・インデックス: 本の索引のようなもの。指定した列で探すときに、全行を見ずに目的の行へ飛べる
+--   ・EXPLAIN QUERY PLAN: クエリを実行せず、DB がどう処理するつもりかを表示する
+--       SCAN orders                     … 全行を順に読む（遅い）
+--       SEARCH orders USING INDEX ...   … インデックスで探す（速い）
+--   PostgreSQL / MySQL では EXPLAIN（実際に測るなら EXPLAIN ANALYZE）。
+--
 -- 【問題】
 -- `SELECT * FROM orders WHERE customer_id = 10;` の実行計画を `EXPLAIN QUERY PLAN` で確認せよ。全件走査（SCAN）になっているはずなので、インデックス検索（SEARCH）に変わるようインデックスを作成し、実行計画がどう変わったか確かめよ。
 -- （インデックスを作る文と EXPLAIN QUERY PLAN の文を、この順で解答ファイルに書いて実行する）

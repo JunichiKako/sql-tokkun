@@ -1,5 +1,12 @@
 -- W10-D1-1 ★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 1: INSERT
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   INSERT … テーブルに行を追加する
+--       INSERT INTO categories (category_id, name, parent_id)
+--       VALUES (22, '文房具', NULL);
+--   列名の並びと VALUES の値の並びを対応させる。
+--   ここから Week 10 は、データを変更する文（DML）を書く。採点は DB のコピーで行うので、元のデータは壊れない。
+--
 -- 【問題】
 -- 最上位カテゴリとして、category_id = 22・名前 '文房具' を追加せよ。
 --

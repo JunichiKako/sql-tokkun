@@ -1,5 +1,10 @@
 -- W11-D2-2 ★★   Week 11: インデックス・実行計画・クエリの書き換え / Day 2: インデックスが効かない書き方
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   式インデックス … 列そのものではなく、式の結果にインデックスを張る
+--       CREATE INDEX idx_customers_email_lower ON customers (lower(email));
+--   WHERE lower(email) = ... のように、列を関数で包んだ条件でもインデックスが使えるようになる。
+--
 -- 【問題】
 -- `SELECT customer_id FROM customers WHERE lower(email) = 'watanabe33@example.com';` は email 列に普通のインデックスを張っても速くならない。このクエリのままインデックスが使われるようにせよ。
 --

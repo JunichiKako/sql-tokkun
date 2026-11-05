@@ -1,5 +1,12 @@
 -- W04-D4-2 ★★   Week 4: サブクエリと集合演算 / Day 4: 集合演算（UNION / INTERSECT / EXCEPT）
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   INTERSECT … 2つの SELECT の結果の「両方に含まれる行」だけを残す（積集合）
+--       SELECT customer_id FROM ... 2024年の購入者
+--       INTERSECT
+--       SELECT customer_id FROM ... 2025年の購入者
+--   重複行は1つにまとめられる。
+--
 -- 【問題】
 -- 2024年と2025年の両方で completed の注文がある顧客の ID を求めよ。
 --

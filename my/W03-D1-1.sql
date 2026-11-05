@@ -1,5 +1,15 @@
 -- W03-D1-1 ★   Week 3: JOIN / Day 1: INNER JOIN
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   JOIN（INNER JOIN）… 2つのテーブルを、対応する列でつないで1つの表にする
+--       SELECT p.name, c.name
+--       FROM products p
+--       JOIN categories c ON c.category_id = p.category_id
+--   ・FROM products p の p は「テーブルの別名」。以降は products の代わりに p と書ける
+--   ・ON の後ろに「どの列とどの列が対応するか」を書く
+--   ・両方のテーブルに同じ名前の列（name など）があるので、p.name / c.name のように「別名.列名」で区別する
+--   ・INNER JOIN は、相手が見つかった行だけが残る（相手のいない行は消える）
+--
 -- 【問題】
 -- 全商品について、商品名と所属カテゴリ名を取得せよ。
 --

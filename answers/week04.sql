@@ -3,6 +3,10 @@
 -- ## Day 1: スカラサブクエリと IN
 
 -- [W04-D1-1] ★
+-- 新構文: サブクエリ（スカラサブクエリ）… SELECT の中に別の SELECT を括弧で入れる
+-- |     WHERE price > (SELECT AVG(price) FROM products)
+-- | 括弧の中が先に実行され、1つの値（ここでは平均価格）に置き換わってから外側が実行される。
+-- | 1行1列の結果を返すサブクエリは、普通の値と同じように比較や計算に使える。
 -- 問: 全商品の平均価格より高い商品を取得せよ。
 -- 出力: product_id, name, price
 SELECT product_id, name, price
@@ -10,6 +14,10 @@ FROM products
 WHERE price > (SELECT AVG(price) FROM products);
 
 -- [W04-D1-2] ★★
+-- 新構文: IN (サブクエリ) / NOT IN (サブクエリ) … サブクエリの結果の一覧に含まれるかを調べる
+-- |     WHERE product_id IN (SELECT product_id FROM reviews)
+-- | IN ('a', 'b') の値の一覧の代わりに、SELECT の結果を使える。
+-- | 注意: NOT IN のサブクエリの結果に NULL が1つでも混ざると、結果が0件になる（Week 11 で詳しく）。
 -- 問: レビューが1件も付いていない商品を、サブクエリを使って取得せよ。
 -- 出力: product_id, name
 SELECT product_id, name
@@ -56,6 +64,14 @@ FROM employees;
 -- ## Day 2: EXISTS と相関サブクエリ
 
 -- [W04-D2-1] ★★
+-- 新構文: EXISTS / NOT EXISTS … サブクエリの結果が1行でもあるか（ないか）を調べる
+-- |     WHERE NOT EXISTS (
+-- |       SELECT 1 FROM orders o
+-- |       WHERE o.customer_id = c.customer_id
+-- |     )
+-- | ・サブクエリの中で外側のテーブル（c）の列を使える。外側の1行ごとにサブクエリが評価される（相関サブクエリ）
+-- | ・SELECT 1 の 1 に意味はない。EXISTS は「行があるかどうか」だけを見るので、何を SELECT してもよい
+-- | ・NOT IN と違い、NULL の影響を受けない
 -- 問: 2024年12月31日までに登録した顧客のうち、2025年に completed の注文が1件もない顧客を取得せよ。
 -- 出力: customer_id, name
 -- ヒント: NOT EXISTS。
@@ -134,6 +150,13 @@ WHERE r.created_at = (
 -- ## Day 3: 派生テーブル（FROM 句のサブクエリ）
 
 -- [W04-D3-1] ★★
+-- 新構文: FROM 句のサブクエリ（派生テーブル）… 集計結果をもう一度集計する
+-- |     SELECT AVG(total)
+-- |     FROM (
+-- |       SELECT customer_id, SUM(...) AS total FROM ... GROUP BY customer_id
+-- |     ) AS t
+-- | 内側で「顧客ごとの合計」を作り、外側でその平均を出す、のように2段階で集計できる。
+-- | 派生テーブルには必ず AS で名前を付ける。
 -- 問: completed の注文がある顧客について「顧客ごとの購入総額」を出し、その平均（顧客1人あたりの平均購入総額、整数に四捨五入）を求めよ。
 -- 出力: avg_total
 SELECT ROUND(AVG(total)) AS avg_total
@@ -239,6 +262,13 @@ ORDER BY sales DESC;
 -- ## Day 4: 集合演算（UNION / INTERSECT / EXCEPT）
 
 -- [W04-D4-1] ★★ ordered
+-- 新構文: UNION ALL … 2つの SELECT の結果を縦につなげる
+-- |     SELECT 'registered', registered_at FROM customers WHERE ...
+-- |     UNION ALL
+-- |     SELECT 'ordered', ordered_at FROM orders WHERE ...
+-- | ・2つの SELECT の列の数と並びをそろえる
+-- | ・UNION（ALL なし）は重複行を1つにまとめる。重複を消す必要がなければ速い UNION ALL を使う
+-- | ・ORDER BY は最後に1回だけ書き、全体を並べ替える
 -- 問: 顧客ID 1 の行動履歴を1つの時系列にまとめよ。会員登録を 'registered'、注文を 'ordered' というイベント種別で表し、日時の昇順に並べること。
 -- 出力: event_type, event_at
 -- 解説: UNION は重複排除のためにソート等が走る。重複があり得ない・消したくない場合は UNION ALL を使う。
@@ -252,6 +282,11 @@ WHERE customer_id = 1
 ORDER BY event_at;
 
 -- [W04-D4-2] ★★
+-- 新構文: INTERSECT … 2つの SELECT の結果の「両方に含まれる行」だけを残す（積集合）
+-- |     SELECT customer_id FROM ... 2024年の購入者
+-- |     INTERSECT
+-- |     SELECT customer_id FROM ... 2025年の購入者
+-- | 重複行は1つにまとめられる。
 -- 問: 2024年と2025年の両方で completed の注文がある顧客の ID を求めよ。
 -- 出力: customer_id
 SELECT customer_id FROM orders
@@ -261,6 +296,11 @@ SELECT customer_id FROM orders
 WHERE status = 'completed' AND ordered_at >= '2025-01-01' AND ordered_at < '2026-01-01';
 
 -- [W04-D4-3] ★★
+-- 新構文: EXCEPT … 1つ目の SELECT の結果から、2つ目の結果に含まれる行を取り除く（差集合）
+-- |     SELECT customer_id FROM ... 上半期の購入者
+-- |     EXCEPT
+-- |     SELECT customer_id FROM ... 下半期の購入者
+-- | 上下を入れ替えると結果が変わる。Oracle では MINUS という名前。
 -- 問: 2025年の上半期（1〜6月）には completed の注文があるのに、下半期（7〜12月）には1件もない顧客の ID を求めよ。
 -- 出力: customer_id
 SELECT customer_id FROM orders

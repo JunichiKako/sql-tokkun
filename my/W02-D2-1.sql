@@ -12,6 +12,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D2-1
 
 -- ▼ ここに SQL を書く
+SELECT prefecture, COUNT(prefecture) AS cnt
+FROM customers
+GROUP BY prefecture
+ORDER BY cnt DESC, prefecture 
 
 
 

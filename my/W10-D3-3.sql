@@ -1,5 +1,14 @@
 -- W10-D3-3 ★★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 3: DELETE と UPSERT
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   UPSERT（INSERT ... ON CONFLICT）… 行がなければ追加、すでにあれば更新する
+--       INSERT INTO product_stock (product_id, stock)
+--       VALUES (2, 3)
+--       ON CONFLICT (product_id) DO UPDATE SET stock = stock + excluded.stock;
+--   ・ON CONFLICT (列): その列（主キーなど）が重複したときの動作を指定する
+--   ・excluded.列名: 挿入しようとした値（ここでは 3）
+--   SQLite と PostgreSQL は同じ書き方。MySQL は ON DUPLICATE KEY UPDATE。
+--
 -- 【問題】
 -- テーブル product_stock（product_id: 整数・主キー、stock: 整数・NOT NULL）を作成し、初期データとして (1, 10) と (2, 5) を登録せよ。続けて、入荷データ (2, 3) と (3, 7) を「すでに行があれば stock に加算、なければ新規登録」する1つの文で反映せよ。
 --

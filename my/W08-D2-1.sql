@@ -1,5 +1,11 @@
 -- W08-D2-1 ★★   Week 8: ウィンドウ関数 (2) 前後の行・累計・フレーム / Day 2: 累計と移動平均
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   SUM(列) OVER (ORDER BY ...) … 累計（ランニングトータル）
+--       SELECT ym, sales, SUM(sales) OVER (ORDER BY ym) AS cumulative FROM monthly
+--   OVER に ORDER BY を書くと、「先頭の行から現在の行まで」の合計になる。
+--   PARTITION BY と組み合わせれば、顧客ごとの累計なども出せる。
+--
 -- 【問題】
 -- 2025年の月次 completed 売上と、年初からの累計を求めよ。月の昇順。
 --

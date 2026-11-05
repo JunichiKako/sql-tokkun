@@ -1,5 +1,12 @@
 -- W03-D5-2 ★★★   Week 3: JOIN / Day 5: 総合演習
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   FROM 句のサブクエリ … SELECT の結果を、1つのテーブルのように扱う
+--       SELECT COUNT(*)
+--       FROM (SELECT DISTINCT customer_id FROM orders) AS t
+--   括弧の中の SELECT を先に実行し、その結果に AS t と名前を付けて、外側の SELECT の材料にする。
+--   詳しくは Week 4 で扱う。
+--
 -- 【問題】
 -- completed の注文で購入された「顧客 × 商品」の組み合わせのうち、その顧客がその商品のレビューをまだ書いていない組み合わせは何組あるか。
 --

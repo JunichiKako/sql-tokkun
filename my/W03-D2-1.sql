@@ -1,5 +1,13 @@
 -- W03-D2-1 ★★   Week 3: JOIN / Day 2: LEFT JOIN
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   LEFT JOIN … 左側（FROM に書いた方）のテーブルの行を、相手がいなくても全部残す
+--       SELECT c.customer_id, o.order_id
+--       FROM customers c
+--       LEFT JOIN orders o ON o.customer_id = c.customer_id
+--   注文が1件もない顧客も1行残り、相手側の列（o.order_id など）は NULL になる。
+--   COUNT(o.order_id) と書くと NULL を数えないので、注文0件の顧客は 0 になる（COUNT(*) だと 1 になってしまう）。
+--
 -- 【問題】
 -- 全顧客について注文回数（ステータスは問わない）を求めよ。一度も注文していない顧客は 0 と表示すること。
 --

@@ -1,5 +1,15 @@
 -- W10-D4-1 ★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 4: テーブル定義・制約・ビュー
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   制約 … テーブルに入れてよい値のルールを決める
+--       CREATE TABLE coupons (
+--         code          TEXT PRIMARY KEY,
+--         discount_rate INTEGER NOT NULL CHECK (discount_rate BETWEEN 1 AND 50),
+--         valid_until   TEXT
+--       );
+--   ・CHECK (条件): 条件を満たさない値を入れようとするとエラーになる
+--   ・ほかに UNIQUE（重複不可）、DEFAULT 値（省略時の値）、REFERENCES（外部キー）などがある
+--
 -- 【問題】
 -- クーポンのマスタテーブル coupons を作成せよ。列は code（文字列・主キー）、discount_rate（整数・NOT NULL・1〜50 の範囲のみ許可する CHECK 制約）、valid_until（文字列・NULL 可）。作成後、('WELCOME10', 10, NULL)、('SUMMER25', 15, '2025-08-31')、('WINTER25', 15, '2025-12-31')、('VIP15', 15, NULL) を登録せよ。
 --

@@ -13,6 +13,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D2-3
 
 -- ▼ ここに SQL を書く
+SELECT strftime('%Y-%m', ordered_at) AS ym, COUNT(*) AS cnt
+FROM orders
+GROUP BY ym
+ORDER BY ym
+
 
 
 

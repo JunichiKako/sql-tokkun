@@ -3,6 +3,17 @@
 -- ## Day 1: ROW_NUMBER / RANK / DENSE_RANK
 
 -- [W07-D1-1] ★★
+-- 新構文: ウィンドウ関数 … 行をまとめずに、各行に「順位」や「集計値」を付ける
+-- |     SELECT name, salary,
+-- |            RANK()       OVER (ORDER BY salary DESC) AS rnk,
+-- |            DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk,
+-- |            ROW_NUMBER() OVER (ORDER BY salary DESC, employee_id) AS row_num
+-- |     FROM employees
+-- | ・OVER (ORDER BY ...) で、どの順番で順位を付けるかを指定する
+-- | ・RANK: 同じ値は同順位、次は番号が飛ぶ（1, 2, 2, 4）
+-- | ・DENSE_RANK: 同じ値は同順位、番号は飛ばない（1, 2, 2, 3）
+-- | ・ROW_NUMBER: 同じ値でも必ず別の番号（1, 2, 3, 4）。並び順が一意になるよう第2キーを付ける
+-- | GROUP BY と違い、行の数は減らない。
 -- 問: 全社員に年収の高い順で順位を付けよ。RANK（同順位の次は番号が飛ぶ）、DENSE_RANK（飛ばない）、ROW_NUMBER（同額なら employee_id の小さい方が先の通し番号）の3種類を並べること。
 -- 出力: name, salary, rnk, dense_rnk, row_num
 SELECT name, salary,
@@ -12,6 +23,9 @@ SELECT name, salary,
 FROM employees;
 
 -- [W07-D1-2] ★★
+-- 新構文: PARTITION BY … ウィンドウ関数を、グループごとに分けて計算する
+-- |     RANK() OVER (PARTITION BY department_id ORDER BY salary DESC)
+-- | 部署ごとに1位から順位を付け直す。GROUP BY と違い、行はまとめられずにそのまま残る。
 -- 問: 部署に所属している社員について、部署内での年収順位（RANK、高い順）を求めよ。
 -- 出力: department_id, name, salary, rnk
 SELECT department_id, name, salary,
@@ -20,6 +34,12 @@ FROM employees
 WHERE department_id IS NOT NULL;
 
 -- [W07-D1-3] ★★★
+-- 新構文: ウィンドウ関数の結果での絞り込み … WHERE に直接は書けないので、CTE かサブクエリで包む
+-- |     WITH ranked AS (
+-- |       SELECT ..., DENSE_RANK() OVER (...) AS rnk FROM employees
+-- |     )
+-- |     SELECT ... FROM ranked WHERE rnk <= 2
+-- | ウィンドウ関数は WHERE より後に計算されるため、同じ SELECT の WHERE では使えない。
 -- 問: 各部署で年収が上位2位以内（DENSE_RANK で 2 以下。同額は同順位）の社員を取得せよ。部署未配属の社員は除く。
 -- 出力: department_id, name, salary
 -- 解説: ウィンドウ関数の結果は WHERE で直接絞れない（WHERE の後に評価されるため）。CTE かサブクエリで一段包む。
@@ -67,6 +87,10 @@ WHERE rnk <= 2;
 -- ## Day 2: PARTITION BY と集約ウィンドウ
 
 -- [W07-D2-1] ★★
+-- 新構文: 集計関数をウィンドウ関数として使う … AVG / SUM / MAX などに OVER を付ける
+-- |     AVG(salary) OVER (PARTITION BY department_id)   -- 各行に「自分の部署の平均年収」を付ける
+-- |     SUM(sales) OVER ()                               -- 各行に「全体の合計」を付ける
+-- | OVER () のように括弧の中が空なら、全行が1つのグループになる。
 -- 問: 部署に所属している社員について、年収・部署の平均年収（整数に四捨五入）・部署平均との差（整数に四捨五入）を求めよ。
 -- 出力: name, department_id, salary, dept_avg, diff
 -- 解説: GROUP BY と違い、ウィンドウ関数は行を潰さずに集計値を各行に付けられる。
@@ -84,6 +108,11 @@ SELECT product_id, category_id, price,
 FROM products;
 
 -- [W07-D2-3] ★★★
+-- 新構文: SUM(SUM(...)) OVER () … GROUP BY の集計結果に、さらにウィンドウ関数を掛ける
+-- |     SELECT category, SUM(amount) AS sales,
+-- |            SUM(amount) * 100.0 / SUM(SUM(amount)) OVER () AS share
+-- |     FROM ... GROUP BY category
+-- | 内側の SUM が GROUP BY の集計（カテゴリ別売上）、外側の SUM ... OVER () がその全体合計。
 -- 問: カテゴリ（商品が直接属するカテゴリ）ごとの completed 売上と構成比（百分率、小数第1位まで）を、今度はウィンドウ関数で求めよ（W06-D3-1 の別解）。
 -- 出力: category_name, sales, share
 -- ヒント: SUM(SUM(...)) OVER () のように、集約結果に対してウィンドウ関数を掛けられる。

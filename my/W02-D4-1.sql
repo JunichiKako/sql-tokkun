@@ -1,5 +1,12 @@
 -- W02-D4-1 ★★   Week 2: 集計（GROUP BY / HAVING） / Day 4: 条件付き集計
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   SUM(CASE WHEN 条件 THEN 1 ELSE 0 END) … 条件に合う行だけを数える（条件付き集計）
+--       SELECT SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_cnt
+--       FROM orders
+--   CASE で「当てはまる行は 1、それ以外は 0」に変換してから合計すると、当てはまる行の数になる。
+--   1つの SELECT の中に条件違いの SUM(CASE ...) を並べれば、件数を横に並べられる。
+--
 -- 【問題】
 -- 月ごと（'YYYY-MM'）に、completed の注文件数と cancelled の注文件数を横に並べて求めよ。月の昇順。
 --

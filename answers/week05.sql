@@ -3,6 +3,12 @@
 -- ## Day 1: 文字列関数
 
 -- [W05-D1-1] ★★
+-- 新構文: 文字列関数
+-- |     lower('ABC')               → 'abc'（小文字にする。大文字は upper）
+-- |     instr('sato@example.com', '@')   → 5（'@' が何文字目にあるか。なければ 0）
+-- |     substr('sato@example.com', 6)    → 'example.com'（6文字目から最後まで）
+-- |     substr('sato@example.com', 1, 4) → 'sato'（1文字目から4文字分）
+-- | instr で区切り文字の位置を探し、substr でその前後を切り出す、という組み合わせでよく使う。
 -- 問: メールアドレスのドメイン（@ より後ろ）ごとに顧客数を求めよ。大文字・小文字の違いは無視し、ドメインは小文字で出すこと。メール未登録の顧客は除く。
 -- 出力: domain, cnt
 -- ヒント: SQLite は instr() と substr()。PostgreSQL なら split_part(email, '@', 2)。
@@ -20,6 +26,9 @@ SELECT customer_id,
 FROM customers;
 
 -- [W05-D1-3] ★★
+-- 新構文: || … 文字列をつなげる
+-- |     '電気ケトル' || '（' || 'キッチン家電' || '）'   → '電気ケトル（キッチン家電）'
+-- | MySQL では || が使えないので CONCAT(a, b, ...) を使う。
 -- 問: 全商品について「商品名（カテゴリ名）」という形式のラベルを作れ。括弧は全角の（ ）を使うこと。例: 電気ケトル（キッチン家電）
 -- 出力: product_id, label
 SELECT p.product_id, p.name || '（' || c.name || '）' AS label
@@ -29,6 +38,8 @@ JOIN categories c ON c.category_id = p.category_id;
 -- ## Day 1 定着: 文字列関数
 
 -- [W05-D1-R1] ★ ordered
+-- 新構文: length(文字列) … 文字数を返す
+-- |     length('電気ケトル')   → 5
 -- 問: 商品名の文字数を求め、文字数の多い順（同じなら product_id 順）に上位5件を取得せよ。
 -- 出力: product_id, name, name_length
 -- ヒント: 文字数は length()。
@@ -65,6 +76,11 @@ GROUP BY hour
 ORDER BY hour;
 
 -- [W05-D2-2] ★★
+-- 新構文: strftime('%Y%m%d', 日付) … 日付を 'YYYYMMDD' の8桁の文字列にする
+-- |     strftime('%Y%m%d', '1995-06-23')   → '19950623'
+-- | 満年齢は「(基準日の YYYYMMDD − 生年月日の YYYYMMDD) ÷ 10000 の切り捨て」で求められる。
+-- |     (20260101 - 19950623) / 10000   → 30
+-- | 整数同士の割り算は切り捨てになるので、ここではそれを利用している。
 -- 問: 生年月日が登録されている顧客について、2026年1月1日時点の満年齢を求めよ。
 -- 出力: customer_id, name, age
 -- ヒント: (基準日を YYYYMMDD の整数にしたもの − 生年月日を YYYYMMDD の整数にしたもの) ÷ 10000 の切り捨てが満年齢になる。
@@ -75,6 +91,10 @@ FROM customers
 WHERE birth_date IS NOT NULL;
 
 -- [W05-D2-3] ★★★
+-- 新構文: julianday(日時) … 日時を「ある基準日からの経過日数」（小数付き）に変換する
+-- |     julianday('2025-03-15') - julianday('2025-03-10')   → 5.0
+-- | 2つの julianday の差で、何日離れているかが分かる。時刻も含むので 0.5（12時間）のような値も出る。
+-- | PostgreSQL なら a - b、MySQL なら DATEDIFF(a, b) を使う。
 -- 問: 注文したことがある顧客について、会員登録から初回注文（ステータスは問わない）までの日数を求め、その平均（小数第1位まで）を出せ。日数は時刻も含めた実数（julianday の差）で計算すること。
 -- 出力: avg_days
 SELECT ROUND(AVG(julianday(f.first_order_at) - julianday(c.registered_at)), 1) AS avg_days
@@ -121,6 +141,10 @@ LEFT JOIN reviews r ON r.product_id = p.product_id
 GROUP BY p.product_id;
 
 -- [W05-D3-2] ★★
+-- 新構文: NULLIF(値1, 値2) … 値1 と 値2 が等しければ NULL を、違えば 値1 を返す
+-- |     NULLIF(0, 0)   → NULL
+-- |     NULLIF(5, 0)   → 5
+-- | 割り算の分母を NULLIF(分母, 0) にすると、分母が 0 のときに NULL になり、0 除算エラーを防げる。
 -- 問: 全顧客について、キャンセル率（cancelled の注文数 ÷ 全注文数、小数第3位まで）を求めよ。注文が0件の顧客は NULL とすること。
 -- 出力: customer_id, cancel_rate
 -- ヒント: 分母を NULLIF(分母, 0) にすると 0 除算を NULL にできる。
@@ -212,6 +236,10 @@ FROM (
 ) AS t;
 
 -- [W05-D4-3] ★★★ ordered
+-- 新構文: ORDER BY に CASE を書く … 好きな順番で並べる
+-- |     ORDER BY CASE status WHEN 'pending' THEN 1 WHEN 'shipped' THEN 2 ELSE 3 END
+-- | 値を順番の数字に置き換え、その数字で並べ替える。
+-- | CASE 列 WHEN 値 THEN ... の形は、CASE WHEN 列 = 値 THEN ... の省略形。
 -- 問: ステータスごとの注文件数を、業務フローの順（pending → shipped → completed → cancelled）に並べて出せ。
 -- 出力: status, cnt
 -- ヒント: ORDER BY に CASE 式を書ける。
@@ -277,6 +305,12 @@ GROUP BY month
 ORDER BY month;
 
 -- [W05-D5-2] ★★★ ordered
+-- 新構文: date(日時, '修飾子', ...) … 日時から日付を計算する
+-- |     date('2025-03-14 10:00:00')                         → '2025-03-14'（日付だけにする）
+-- |     date('2025-03-14', 'start of month')                 → '2025-03-01'（その月の1日）
+-- |     date('2025-03-14', '+1 month')                       → '2025-04-14'
+-- |     date('2025-03-14', 'start of month', '+1 month', '-1 day')  → '2025-03-31'（月末日）
+-- | 修飾子は左から順に適用される。'+1 day'、'-1 month'、'+1 year' なども使える。
 -- 問: 「月末日」に行われた注文の件数を、月ごと（'YYYY-MM'）に求めよ（ステータスは問わない。月末日に注文がなかった月は出さなくてよい）。月の昇順。
 -- 出力: ym, cnt
 -- ヒント: SQLite では date(ordered_at, 'start of month', '+1 month', '-1 day') でその月の末日が得られる。

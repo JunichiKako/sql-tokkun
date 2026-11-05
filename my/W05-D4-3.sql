@@ -1,5 +1,11 @@
 -- W05-D4-3 ★★★   Week 5: 文字列・日付・NULL 処理・CASE 応用 / Day 4: CASE 応用とピボット
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   ORDER BY に CASE を書く … 好きな順番で並べる
+--       ORDER BY CASE status WHEN 'pending' THEN 1 WHEN 'shipped' THEN 2 ELSE 3 END
+--   値を順番の数字に置き換え、その数字で並べ替える。
+--   CASE 列 WHEN 値 THEN ... の形は、CASE WHEN 列 = 値 THEN ... の省略形。
+--
 -- 【問題】
 -- ステータスごとの注文件数を、業務フローの順（pending → shipped → completed → cancelled）に並べて出せ。
 --

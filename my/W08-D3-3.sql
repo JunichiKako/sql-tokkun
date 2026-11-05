@@ -1,5 +1,12 @@
 -- W08-D3-3 ★★★   Week 8: ウィンドウ関数 (2) 前後の行・累計・フレーム / Day 3: フレームと FIRST_VALUE / LAST_VALUE
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   RANGE と ROWS … フレームの数え方の違い
+--       SUM(salary) OVER (ORDER BY salary)                           -- デフォルトは RANGE
+--       SUM(salary) OVER (ORDER BY salary ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+--   RANGE は ORDER BY の値が同じ行（同額の社員など）をまとめて1つとして扱うので、同額の行は同じ累計になる。
+--   ROWS は1行ずつ数えるので、並び順どおりに1行ずつ足されていく。
+--
 -- 【問題】
 -- 全社員を年収の低い順（同額なら employee_id 順）に並べ、年収の累計を2通り求めよ。(1) running_range: `ORDER BY salary` のみを指定したデフォルトのフレームでの累計（同額の行は同じ値になる）。(2) running_rows: 並び順どおりに1行ずつ足していく累計。
 --

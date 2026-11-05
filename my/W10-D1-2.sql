@@ -1,5 +1,16 @@
 -- W10-D1-2 ★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 1: INSERT
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   CREATE TABLE / INSERT ... SELECT … テーブルを作り、SELECT の結果をまとめて登録する
+--       CREATE TABLE vip_customers (
+--         customer_id INTEGER PRIMARY KEY,   -- 主キー（重複不可・1行を特定する列）
+--         name        TEXT NOT NULL,         -- NOT NULL: NULL を入れられない
+--         total       INTEGER NOT NULL
+--       );
+--       INSERT INTO vip_customers (customer_id, name, total)
+--       SELECT ... FROM ... ;                -- VALUES の代わりに SELECT の結果を入れる
+--   主な型: INTEGER（整数）、REAL（小数）、TEXT（文字列）
+--
 -- 【問題】
 -- テーブル vip_customers（customer_id: 整数・主キー、name: 文字列・NOT NULL、total: 整数・NOT NULL）を作成し、completed の購入総額が 300,000 円以上の顧客を INSERT ... SELECT で登録せよ。
 --

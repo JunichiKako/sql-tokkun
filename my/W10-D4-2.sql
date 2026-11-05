@@ -1,5 +1,13 @@
 -- W10-D4-2 ★★   Week 10: データ更新（DML）とテーブル定義（DDL） / Day 4: テーブル定義・制約・ビュー
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   CREATE VIEW … SELECT 文に名前を付けて保存し、テーブルのように使えるようにする
+--       CREATE VIEW v_order_totals AS
+--       SELECT o.order_id, SUM(...) AS total FROM ... GROUP BY ...;
+--
+--       SELECT * FROM v_order_totals WHERE total > 10000;
+--   ビューはデータを持たず、使うたびに中の SELECT が実行される。
+--
 -- 【問題】
 -- 注文ごとの合計金額を見られるビュー v_order_totals を作成せよ。列は order_id, customer_id, ordered_at, status, total（明細の 数量 × 単価 の合計）。
 --

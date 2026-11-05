@@ -1,5 +1,10 @@
 -- W07-D1-2 ★★   Week 7: ウィンドウ関数 (1) 順位とパーティション / Day 1: ROW_NUMBER / RANK / DENSE_RANK
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   PARTITION BY … ウィンドウ関数を、グループごとに分けて計算する
+--       RANK() OVER (PARTITION BY department_id ORDER BY salary DESC)
+--   部署ごとに1位から順位を付け直す。GROUP BY と違い、行はまとめられずにそのまま残る。
+--
 -- 【問題】
 -- 部署に所属している社員について、部署内での年収順位（RANK、高い順）を求めよ。
 --

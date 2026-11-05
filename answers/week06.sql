@@ -3,6 +3,16 @@
 -- ## Day 1: CTE の基本
 
 -- [W06-D1-1] ★★ ordered
+-- 新構文: WITH（CTE）… クエリの途中結果に名前を付け、後のクエリでテーブルのように使う
+-- |     WITH customer_totals AS (
+-- |       SELECT customer_id, SUM(...) AS total FROM ... GROUP BY customer_id
+-- |     )
+-- |     SELECT * FROM customer_totals WHERE total > 100000
+-- | 派生テーブル（FROM 句のサブクエリ）と同じことを、上から順に読める形で書ける。
+-- | カンマで区切って複数書け、後のものから前のものを参照できる。
+-- |     WITH a AS (...),
+-- |          b AS (SELECT ... FROM a)
+-- |     SELECT ... FROM b
 -- 問: CTE で「顧客ごとの completed 購入総額」を作り、購入総額の上位10人を取得せよ。総額の高い順、同額なら customer_id 順。
 -- 出力: customer_id, name, total
 WITH customer_totals AS (
@@ -249,6 +259,9 @@ JOIN category_avg ca ON ca.category_id = ps.category_id
 WHERE ps.sales > ca.avg_sales;
 
 -- [W06-D3-3] ★★★ ordered
+-- 新構文: strftime の修飾子 … strftime にも date と同じ修飾子が使える
+-- |     strftime('%Y-%m', '2025-03' || '-01', '-1 month')   → '2025-02'（前月）
+-- | 'YYYY-MM' に '-01' を付けて日付にしてから1か月戻し、また 'YYYY-MM' に戻している。
 -- 問: 月次の completed 売上について、前月の売上と前月比の伸び率（(当月 − 前月) ÷ 前月 の百分率、小数第1位まで）を求めよ。ウィンドウ関数は使わず、月次売上の CTE を自己結合すること。最初の月は前月・伸び率とも NULL。月の昇順。
 -- 出力: ym, sales, prev_sales, mom
 -- ヒント: 前月は strftime('%Y-%m', ym || '-01', '-1 month') で求められる。

@@ -1,5 +1,13 @@
 -- W07-D1-3 ★★★   Week 7: ウィンドウ関数 (1) 順位とパーティション / Day 1: ROW_NUMBER / RANK / DENSE_RANK
 --
+-- 【はじめて出てくる構文】 先に読んでから問題へ
+--   ウィンドウ関数の結果での絞り込み … WHERE に直接は書けないので、CTE かサブクエリで包む
+--       WITH ranked AS (
+--         SELECT ..., DENSE_RANK() OVER (...) AS rnk FROM employees
+--       )
+--       SELECT ... FROM ranked WHERE rnk <= 2
+--   ウィンドウ関数は WHERE より後に計算されるため、同じ SELECT の WHERE では使えない。
+--
 -- 【問題】
 -- 各部署で年収が上位2位以内（DENSE_RANK で 2 以下。同額は同順位）の社員を取得せよ。部署未配属の社員は除く。
 --
