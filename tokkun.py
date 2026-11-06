@@ -2,7 +2,7 @@
 """SQL特訓の採点ツール。
 
     python3 tokkun.py                 進捗一覧
-    python3 tokkun.py W01-D1-1        my/W01-D1-1.sql を採点
+    python3 tokkun.py W01-D1-1        my/W01/W01-D1-1.sql を採点
     python3 tokkun.py W01             Week 1 のうち解答済みのものをまとめて採点
     python3 tokkun.py --run W01-D1-1  実行結果を表示してから採点（VS Code の Cmd+Shift+B はこれを呼ぶ）
     python3 tokkun.py --init          問題文入りの解答ファイルを my/ に作る（既存のファイルは上書きしない）
@@ -131,9 +131,14 @@ def show(title, cols, rows, limit=8):
         print("    ...")
 
 
+def my_path(problem):
+    """解答ファイルの場所。週ごとのフォルダに分けて置く（例: my/W01/W01-D1-1.sql）。"""
+    return MY / problem["id"][:3] / f"{problem['id']}.sql"
+
+
 def answered(problem):
     """解答ファイルに（コメント以外の）SQL が書かれているか。"""
-    path = MY / f"{problem['id']}.sql"
+    path = my_path(problem)
     if not path.exists():
         return False
     return bool(re.sub(r"--[^\n]*", "", path.read_text(encoding="utf-8")).strip(" ;\n\t"))
@@ -149,10 +154,10 @@ def init(problems):
         cols = ", ".join(r[1] for r in conn.execute(f"PRAGMA table_info({t})"))
         sheet.append(f"-- {t}({cols})")
     conn.close()
-    MY.mkdir(exist_ok=True)
+    MY.mkdir(exist_ok=True)  # 週ごとのフォルダは書き出すときに作る
     created = 0
     for p in problems:
-        path = MY / f"{p['id']}.sql"
+        path = my_path(p)
         if path.exists():
             continue
         question = [ln for ln in p["question"].split("\n") if not ln.startswith("```")]
@@ -192,6 +197,7 @@ def init(problems):
                 "--     Cmd + P →「TABLES」と入力して Enter → Cmd + K のあと V（プレビューを横に並べて表示）"]
         if p["hint"]:
             out += [""] * 12 + ["-- ─── ヒント ───"] + [f"-- {ln}" for ln in p["hint"].split("\n")]
+        path.parent.mkdir(exist_ok=True)
         path.write_text("\n".join(out) + "\n", encoding="utf-8")
         created += 1
     print(f"{created} 個の解答ファイルを my/ に作りました（既存の {len(problems) - created} 個はそのまま）")
@@ -199,7 +205,7 @@ def init(problems):
 
 def check(problem, verbose=True):
     """戻り値: True=正解 / False=不正解 / None=未着手または自己採点"""
-    path = MY / f"{problem['id']}.sql"
+    path = my_path(problem)
     if not answered(problem):
         if verbose:
             print(f"{problem['id']}: まだ解答が書かれていません → {path.relative_to(ROOT)} に書いてください")
@@ -257,7 +263,7 @@ def run_file(problems, name):
         sys.exit(f"「{name}」は問題のファイルではありません。my/ の中の解答ファイル（例: W01-D1-1.sql）を開いた状態で実行してください。")
     if not answered(problem):
         sys.exit(f"{problem['id']}: まだ SQL が書かれていません。「▼ ここに SQL を書く」の下に書いてから実行してください。")
-    sql = (MY / f"{problem['id']}.sql").read_text(encoding="utf-8")
+    sql = my_path(problem).read_text(encoding="utf-8")
     conn = fresh_db()
     try:
         result = run(conn, sql)
