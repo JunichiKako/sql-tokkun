@@ -11,6 +11,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D3-3
 
 -- ▼ ここに SQL を書く
+SELECT product_id, COUNT(review_id), ROUND(AVG(rating),2)
+FROM reviews
+GROUP BY product_id
+HAVING COUNT(review_id) >= 5 AND AVG(rating) >= 4.0
+
 
 
 

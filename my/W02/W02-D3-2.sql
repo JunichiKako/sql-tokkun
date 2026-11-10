@@ -11,7 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D3-2
 
 -- ▼ ここに SQL を書く
-
+SELECT order_id, SUM(quantity * unit_price) AS total
+FROM order_items
+GROUP BY order_id
+HAVING SUM(quantity * unit_price) >= 30000
 
 
 -- ─── テーブル早見表 ───

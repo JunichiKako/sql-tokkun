@@ -20,6 +20,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D3-1
 
 -- ▼ ここに SQL を書く
+SELECT customer_id, COUNT(*) AS order_cnt
+FROM orders
+WHERE status <> 'cancelled'
+GROUP BY customer_id	
+HAVING COUNT(*) >= 30
 
 
 
