@@ -12,6 +12,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D2-R3
 
 -- ▼ ここに SQL を書く
+SELECT strftime('%Y-%m', created_at) AS ym, COUNT(*) AS cnt
+FROM reviews
+GROUP BY ym
+ORDER BY created_at
+
+
 
 
 
