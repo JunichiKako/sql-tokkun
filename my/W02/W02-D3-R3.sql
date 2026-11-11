@@ -11,6 +11,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D3-R3
 
 -- ▼ ここに SQL を書く
+SELECT department_id, COUNT(*) AS cnt, ROUND(AVG(salary)) AS avg_salary
+FROM employees
+GROUP BY department_id
+HAVING COUNT(*) >= 5 AND AVG(salary) >= 6500000
+
 
 
 

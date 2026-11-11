@@ -11,6 +11,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D3-R1
 
 -- ▼ ここに SQL を書く
+SELECT customer_id, COUNT(*) AS review_cnt
+FROM reviews
+WHERE comment IS NOT NULL
+GROUP BY customer_id
+HAVING COUNT(*) >= 10
+
 
 
 
