@@ -12,6 +12,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D4-3
 
 -- ▼ ここに SQL を書く
+SELECT strftime('%Y',registered_at) AS year, 
+       SUM(CASE WHEN gender = 'M' THEN 1 ELSE 0 END) AS male_cnt,
+       SUM(CASE WHEN gender = 'F' THEN 1 ELSE 0 END) AS female_cnt,
+       SUM(CASE WHEN gender is NULL THEN 1 ELSE 0 END) AS unknown_cnt
+FROM customers
+GROUP BY strftime('%Y',registered_at)
+ORDER BY year
+
 
 
 

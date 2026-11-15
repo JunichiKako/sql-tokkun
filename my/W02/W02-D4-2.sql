@@ -11,7 +11,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D4-2
 
 -- ▼ ここに SQL を書く
-
+SELECT payment_method,
+       COUNT(order_id) AS total_cnt,
+       ROUND(SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) * 100.0/ COUNT(order_id),1) AS cancel_rate
+FROM orders
+GROUP BY payment_method
 
 
 -- ─── テーブル早見表 ───

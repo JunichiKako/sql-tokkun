@@ -20,6 +20,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D4-1
 
 -- ▼ ここに SQL を書く
+SELECT strftime('%Y-%m',ordered_at) AS ym, SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_cnt,
+       SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_cnt
+FROM orders
+GROUP BY strftime('%Y-%m',ordered_at)
+ORDER BY ym
+
 
 
 
