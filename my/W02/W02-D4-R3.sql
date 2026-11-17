@@ -13,7 +13,13 @@
 
 -- ▼ ここに SQL を書く
 
-
+SELECT strftime('%Y',created_at) AS year,
+       SUM(CASE WHEN rating >= 4 THEN 1 ELSE 0 END)AS high_cnt,
+       SUM(CASE WHEN rating <= 2 THEN 1 ELSE 0 END)AS low_cnt,
+       SUM(CASE WHEN comment IS NULL THEN 1 ELSE 0 END)AS no_comment_cnt
+FROM reviews
+GROUP BY strftime('%Y',created_at)
+ORDER BY year 
 
 -- ─── テーブル早見表 ───
 -- 読み方: テーブル名(列名, 列名, ...)。このDBにある全テーブルと全列を並べてある

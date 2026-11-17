@@ -18,7 +18,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D5-2
 
 -- ▼ ここに SQL を書く
-
+SELECT CAST(strftime('%w',ordered_at) AS INTEGER) AS dow,
+       COUNT(*) AS cnt
+FROM orders
+GROUP BY strftime('%w',ordered_at)
+ORDER BY dow 
 
 
 -- ─── テーブル早見表 ───
