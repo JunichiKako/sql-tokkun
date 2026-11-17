@@ -11,7 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D5-R1
 
 -- ▼ ここに SQL を書く
-
+SELECT referrer_id, COUNT(*)
+FROM customers
+GROUP BY referrer_id
 
 
 -- ─── テーブル早見表 ───

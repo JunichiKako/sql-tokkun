@@ -19,6 +19,11 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT CAST(strftime('%H', accessed_at) AS INTEGER) AS hour, COUNT(*) AS cnt
+FROM access_logs
+GROUP BY strftime('%H', accessed_at)
+ORDER BY hour 
+
 
 
 -- ─── テーブル早見表 ───

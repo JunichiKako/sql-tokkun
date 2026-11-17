@@ -12,6 +12,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D5-R3
 
 -- ▼ ここに SQL を書く
+SELECT COALESCE(gender ,'不明') AS gender_label,
+       COUNT(*) AS cnt,
+       SUM(CASE WHEN referrer_id IS NOT NULL THEN 1 ELSE 0 END)AS referred_cnt
+FROM customers
+GROUP BY gender
+ORDER BY cnt DESC, gender_label
 
 
 

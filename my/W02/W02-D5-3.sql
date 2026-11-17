@@ -12,6 +12,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D5-3
 
 -- ▼ ここに SQL を書く
+SELECT COALESCE(coupon_code, 'なし') AS coupon,
+       COUNT(*) AS cnt,
+       ROUND(AVG(shipping_fee),1)AS avg_shipping
+FROM orders
+GROUP BY coupon_code
+ORDER BY cnt DESC, coupon
 
 
 
