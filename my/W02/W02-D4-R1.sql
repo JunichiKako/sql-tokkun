@@ -13,7 +13,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D4-R1
 
 -- ▼ ここに SQL を書く
-
+SELECT strftime('%Y-%m', ordered_at) AS ym,
+       SUM(CASE WHEN shipping_fee = 0 THEN 1 ELSE 0 END) AS free_cnt,
+       SUM(CASE WHEN shipping_fee = 550 THEN 1 ELSE 0 END) AS paid_cnt
+FROM orders
+GROUP BY strftime('%Y-%m', ordered_at)
+ORDER BY ym
 
 
 -- ─── テーブル早見表 ───

@@ -11,6 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W02-D4-R2
 
 -- ▼ ここに SQL を書く
+SELECT device, COUNT(*) AS total_cnt, ROUND(SUM(CASE WHEN customer_id IS NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(*) ,1) AS guest_rate
+FROM access_logs
+GROUP BY device
 
 
 
