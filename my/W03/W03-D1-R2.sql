@@ -11,7 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D1-R2
 
 -- ▼ ここに SQL を書く
-
+SELECT p.name, r.rating, r.comment, r.created_at
+FROM reviews r
+JOIN products p ON p.product_id = r.product_id
+WHERE r.customer_id = 10
 
 
 -- ─── テーブル早見表 ───

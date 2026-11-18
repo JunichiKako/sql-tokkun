@@ -11,7 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D1-R1
 
 -- ▼ ここに SQL を書く
-
+SELECT e.employee_id, e.name AS employee_name, d.name AS department_name
+FROM employees e
+JOIN departments d ON d.department_id = e.department_id
 
 
 -- ─── テーブル早見表 ───

@@ -11,6 +11,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D1-3
 
 -- ▼ ここに SQL を書く
+SELECT o.order_id, c.name AS customer_name,SUM(oi.quantity * oi.unit_price)  AS total 
+FROM orders o
+JOIN customers c ON c.customer_id = o.customer_id
+JOIN order_items oi ON oi.order_id = o.order_id
+WHERE o.ordered_at >= '2025-12-01' AND o.ordered_at < '2026-01-01'
+      AND o.status = 'completed'
+GROUP BY o.order_id,c.name
+
 
 
 
