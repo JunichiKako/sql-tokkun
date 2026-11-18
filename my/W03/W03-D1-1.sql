@@ -21,6 +21,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D1-1
 
 -- ▼ ここに SQL を書く
+SELECT p.product_id, p.name AS product_name, c.name AS category_name
+FROM products p
+JOIN categories c ON c.category_id = p.category_id
+
 
 
 
