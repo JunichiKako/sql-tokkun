@@ -21,6 +21,10 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT c.customer_id, c.name, COUNT(o.order_id) AS order_cnt
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.customer_id
+GROUP BY c.customer_id, c.name
 
 
 -- ─── テーブル早見表 ───
