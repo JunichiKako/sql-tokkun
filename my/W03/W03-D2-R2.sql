@@ -12,6 +12,11 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D2-R2
 
 -- ▼ ここに SQL を書く
+SELECT c.customer_id, c.name
+FROM customers c
+LEFT JOIN orders o 
+     ON o.customer_id = c.customer_id
+WHERE o.order_id IS NULL
 
 
 

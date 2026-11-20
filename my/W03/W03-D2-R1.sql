@@ -12,6 +12,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D2-R1
 
 -- ▼ ここに SQL を書く
+SELECT p.product_id, p.name, COUNT(r.review_id) AS review_cnt
+FROM products p
+LEFT JOIN reviews r ON r.product_id = p.product_id
+GROUP BY p.product_id, p.name
 
 
 

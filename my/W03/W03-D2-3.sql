@@ -12,7 +12,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D2-3
 
 -- ▼ ここに SQL を書く
-
+SELECT c.customer_id, COUNT(o.order_id) AS order_cnt
+FROM customers c
+LEFT JOIN orders o 
+     ON o.customer_id = c.customer_id
+     AND o.status = 'completed'
+     AND ordered_at >= '2025-01-01'
+     AND ordered_at < '2026-01-01'
+GROUP BY c.customer_id
 
 
 -- ─── テーブル早見表 ───
