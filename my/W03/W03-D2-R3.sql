@@ -13,6 +13,14 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT c.customer_id, COUNT(al.log_id) AS access_cnt
+FROM customers c
+LEFT JOIN access_logs al 
+     ON al.customer_id = c.customer_id
+      AND al.accessed_at >= '2025-12-01'
+      AND al.accessed_at <  '2026-01-01'
+GROUP BY c.customer_id
+
 
 
 
