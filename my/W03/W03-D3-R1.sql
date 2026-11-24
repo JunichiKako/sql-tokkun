@@ -11,6 +11,9 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D3-R1
 
 -- ▼ ここに SQL を書く
+SELECT c.name AS customer_name, cr.name AS referrer_name
+FROM customers c
+LEFT JOIN customers cr ON cr.customer_id = c.referrer_id
 
 
 
