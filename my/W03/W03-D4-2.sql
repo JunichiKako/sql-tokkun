@@ -11,6 +11,12 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D4-2
 
 -- ▼ ここに SQL を書く
+SELECT c.prefecture AS prefecture, SUM(oi.quantity * oi.unit_price) AS sales,COUNT(DISTINCT c.customer_id) AS buyers
+FROM customers c
+JOIN orders o ON o.customer_id = c.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+WHERE o.status = 'completed'
+GROUP BY c.prefecture
 
 
 

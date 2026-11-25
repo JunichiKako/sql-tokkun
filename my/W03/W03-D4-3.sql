@@ -13,7 +13,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D4-3
 
 -- ▼ ここに SQL を書く
-
+SELECT oia.product_id AS product_a, oib.product_id AS product_b, COUNT(*) AS cnt
+FROM order_items oia
+JOIN order_items oib 
+     ON oib.order_id = oia.order_id
+     AND  oia.product_id < oib.product_id
+GROUP BY oia.product_id ,oib.product_id
+ORDER BY cnt DESC, product_a, product_b 
+LIMIT 5
 
 
 -- ─── テーブル早見表 ───
