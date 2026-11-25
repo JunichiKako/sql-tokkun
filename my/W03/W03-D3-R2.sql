@@ -12,7 +12,10 @@
 
 -- ▼ ここに SQL を書く
 
-
+SELECT e.name AS employee_name, e.hired_on AS hired_on, em.name AS manager_name, em.hired_on AS manager_hired_on
+FROM employees e
+LEFT JOIN employees em ON em.employee_id = e.manager_id
+WHERE e.hired_on < em.hired_on
 
 -- ─── テーブル早見表 ───
 -- 読み方: テーブル名(列名, 列名, ...)。このDBにある全テーブルと全列を並べてある

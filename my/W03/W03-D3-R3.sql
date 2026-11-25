@@ -11,7 +11,10 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D3-R3
 
 -- ▼ ここに SQL を書く
-
+SELECT e.name AS employee_name, e.department_id, em.name AS manager_name, em.department_id AS manager_department_id
+FROM employees e
+JOIN employees em ON em.employee_id = e.manager_id
+WHERE e.department_id <> em.department_id
 
 
 -- ─── テーブル早見表 ───

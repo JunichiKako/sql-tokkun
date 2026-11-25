@@ -13,6 +13,15 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT c.name AS category_name, SUM(oi.quantity * oi.unit_price) AS sales
+FROM order_items oi
+JOIN products p ON p.product_id = oi.product_id
+JOIN categories c ON c.category_id = p.category_id
+JOIN orders o ON o.order_id = oi.order_id
+WHERE o.status = 'completed'
+GROUP BY c.category_id, c.name 
+ORDER BY sales DESC
+
 
 
 -- ─── テーブル早見表 ───
