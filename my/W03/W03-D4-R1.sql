@@ -12,7 +12,14 @@
 --     ターミナルから実行する場合: python3 tokkun.py --run W03-D4-R1
 
 -- ▼ ここに SQL を書く
-
+SELECT p.name AS product_name, SUM(oi.quantity * oi.unit_price) AS sales
+FROM products p
+JOIN order_items oi ON oi.product_id = p.product_id
+JOIN orders o ON o.order_id = oi.order_id
+WHERE o.status = 'completed'
+GROUP BY p.name, p.product_id
+ORDER BY sales DESC, p.product_id
+LIMIT 5
 
 
 -- ─── テーブル早見表 ───

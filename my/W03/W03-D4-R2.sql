@@ -12,6 +12,13 @@
 
 -- ▼ ここに SQL を書く
 
+SELECT c.name AS category_name, SUM(oi.quantity) AS total_qty, COUNT( DISTINCT o.customer_id) AS buyers 
+FROM categories c
+JOIN products p ON c.category_id = p.category_id
+JOIN order_items oi ON oi.product_id = p.product_id
+JOIN orders o ON o.order_id = oi.order_id
+WHERE o.status = 'completed'
+GROUP BY c.name,c.category_id
 
 
 -- ─── テーブル早見表 ───
